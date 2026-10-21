@@ -1,0 +1,23 @@
+# Инструменты: тяжёлое не храним (Python-окружение, модели лиц), скрипты храним
+.tools/venv/
+.tools/__pycache__/
+.tools/*.onnx
+
+# Видео, звук, картинки и рабочие файлы сборки - тяжёлые, в git не храним
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.png
+*.jpg
+*_tmp/
+frames/
+
+# Логи сборки
+build_log*.txt
+batch*_log.txt
+
+# Скилл для передачи: модели и окружение не храним
+skill/*/scripts/venv/
+skill/*/scripts/*.onnx
+*.m4a
