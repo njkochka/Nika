@@ -851,6 +851,7 @@ MAT = [
     (re.compile(r"МУДА?К|МУДИЛ"), lambda m: "М*" + m.group(0)[2:]),
     (re.compile(r"ПИД[ОА]Р"), lambda m: "П*" + m.group(0)[2:]),
     (re.compile(r"ЗАЛУП"), "ЗАЛ*П"),
+    (re.compile(r"ДРОЧ"), "ДР*Ч"),
     (re.compile(r"(?<![А-ЯЁ])СУК(?=[АИУЕ]?(?![А-ЯЁ]))"), "С*К"),
 ]
 
