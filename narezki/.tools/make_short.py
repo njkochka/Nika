@@ -132,6 +132,8 @@ def ranges_to_intervals(words, ranges, source, overrides=None):
 
 def faded(source, w, nxt):
     """Где слово w действительно стихло (не дальше 0.5 сек и следующего слова); None - не стихло."""
+    if nxt - 0.05 - w["e"] < 0.1:  # следующее слово вплотную - смотреть негде
+        return None
     lv = loudness(source, w["e"], min(w["e"] + 0.5, nxt - 0.05))
     peak = max(v for _, v in loudness(source, w["s"], max(w["e"], w["s"] + 0.03)))
     for k in range(len(lv) - 9):
@@ -228,7 +230,7 @@ def split_by_silence(source, intervals, starts=(), ends=()):
             # и тихий конец слова: вопрос «...про микрофлору?» затихает ниже порога тишины,
             # пауза начинается внутри слова - режем только там, где слово действительно стихло
             for w, nxt in ends:
-                if ss - 0.3 < w["e"] < se:
+                if ss - 0.3 < w["e"] < se and nxt - w["e"] > 0.15:
                     cut_s = max(cut_s, faded(source, w, nxt) or min(w["e"] + 0.5, nxt - 0.05))
             # паузу вырезаем, только если по обе стороны остаётся не меньше MIN_PIECE:
             # обрывки по 0.2 сек дёргают картинку, а хвост короче 0.15 раньше выкидывался вместе со словом
