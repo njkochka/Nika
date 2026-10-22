@@ -3,7 +3,7 @@
  "prefix": "Орлов",
  "music": "BONES - HDMI (PXVL Remix).mp3",
  "music_lufs": -27.8,
- "sub_style": "pill",
+ "sub_style": "word",
  "host": [
   [
    493,
@@ -54,8 +54,7 @@
     "silence_min": 0.15,
     "min_piece": 0.5,
     "track": true,
-    "stage_torso": 0,
-    "sub_style": "pill"
+    "stage_torso": 0
    },
    "ranges": [
     [

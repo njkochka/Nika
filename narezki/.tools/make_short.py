@@ -21,7 +21,8 @@ config.json:
   track      - true: рамка плавно ведёт лицо, масштаб постоянный (концерты, стендап)
   sub_style  - "pill": новые субтитры (Montserrat Black, слово под голосом на цветной плашке
                с «прыжком»); "neo": шрифт Unbounded, звучащее слово бирюзовое с «прыжком», строка выше
-               (y 1150 вместо 1300); без него - старые (Arial Black, жёлтое слово)
+               (y 1150 вместо 1300); "word": по одному слову, Rubik Black, белое с чёрной обводкой (Орлов 2);
+               без него - старые (Arial Black, жёлтое слово)
   stage_torso - порог яркости одежды под лицом комика (100); 0 - не отсеивать (тёмная одежда, зала нет)
   punch_in   - "auto" (по умолчанию): приближение 115% только там, где голова прыгнула;
                true - на каждой склейке; false - никогда
@@ -100,6 +101,12 @@ NEO_W = 860                          # ширина строки, дальше �
 NEO_COLOR = (0, 236, 220)            # звучащее слово: на розовом и тёмном фоне видно, не жёлтое
 NEO_JUMP = [-14, -7, -3]             # «прыжок» звучащего слова вверх (px) в первые кадры: шрифт широкий,
                                      # увеличение как у pill наезжало бы на соседние слова
+# стиль "word": на экране только звучащее слово - белое с чёрной обводкой и мягкой тенью, по центру
+WORD_FONT = Path(__file__).parent / "fonts" / "Rubik.ttf"  # OFL, с кириллицей
+WORD_SIZE = 88
+WORD_STROKE = 6
+WORD_Y = 1150                        # центр слова: выше подписи и кнопок ТикТока
+WORD_W = 900                         # длинное слово шире - шрифт уменьшается
 SUB_STYLE = "classic"
 
 
@@ -1079,11 +1086,35 @@ def draw_chunk_neo(chunk, active, font, phase):
     return img
 
 
+def word_font(size):
+    f = ImageFont.truetype(str(WORD_FONT), size)
+    f.set_variation_by_name("Black")
+    return f
+
+
+def draw_word(chunk, active, font, phase):
+    """Только звучащее слово, по центру; не влезает в WORD_W - шрифт меньше."""
+    img = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    f, text = font, active["text"]
+    if d.textlength(text, font=f) > WORD_W:
+        f = word_font(int(WORD_SIZE * WORD_W / d.textlength(text, font=f)))
+    l, t, r, b = d.textbbox((0, 0), text, font=f, stroke_width=WORD_STROKE)
+    x, y = (OUT_W - (r - l)) / 2 - l, WORD_Y - (b - t) / 2 - t
+    sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).text((x + 4, y + 8), text, font=f, fill=(0, 0, 0, 150),
+                            stroke_width=WORD_STROKE, stroke_fill=(0, 0, 0, 150))
+    img = Image.alpha_composite(sh.filter(ImageFilter.GaussianBlur(6)), img)
+    ImageDraw.Draw(img).text((x, y), text, font=f, fill=(255, 255, 255),
+                             stroke_width=WORD_STROKE, stroke_fill=(0, 0, 0))
+    return img
+
+
 def burn_subtitles(video, audio, chunks, out):
     pill = SUB_STYLE in ("pill", "neo")  # оба стиля с «прыжком» звучащего слова
-    font = {"pill": lambda: pill_font(PILL_SIZE), "neo": lambda: neo_font(NEO_SIZE)}.get(
-        SUB_STYLE, lambda: ImageFont.truetype(FONT, FONT_SIZE))()
-    draw = {"pill": draw_chunk_pill, "neo": draw_chunk_neo}.get(SUB_STYLE)
+    font = {"pill": lambda: pill_font(PILL_SIZE), "neo": lambda: neo_font(NEO_SIZE),
+            "word": lambda: word_font(WORD_SIZE)}.get(SUB_STYLE, lambda: ImageFont.truetype(FONT, FONT_SIZE))()
+    draw = {"pill": draw_chunk_pill, "neo": draw_chunk_neo, "word": draw_word}.get(SUB_STYLE)
     events = []
     for c in chunks:
         for j, w in enumerate(c):

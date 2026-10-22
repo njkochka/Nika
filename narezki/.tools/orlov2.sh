@@ -14,7 +14,7 @@ if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https:
   git -C "$G" branch --unset-upstream 2>/dev/null || true; git -C "$G" remote remove origin
 fi
 for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
-curl -fsSL "$R/.tools/fonts/Montserrat.ttf" -o "$T/fonts/Montserrat.ttf"
+for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f" -o "$T/fonts/$f"; done
 for f in words.json batch.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
