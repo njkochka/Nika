@@ -239,39 +239,54 @@ _По его структуре 0:39-0:50: один план в камере, ф
 
 > An old 17th-century round iron wall clock with a single hour hand and Roman numerals, rusty and dirty, front view, centered, isolated on a plain white background, photorealistic.
 
-### Сцена 8 (черновик, ждёт утверждения Ники), 2026-10-23
+### Сцена 8 (дыба), раскадровка 2026-10-22
 
 Русский текст: «Но дальше было ещё хуже. Через трое суток без сна, если ты
 продолжала отрицать вину, тебя привязывали верёвками к доске, и палач начинал
 медленно натягивать канаты.»
 
-Фраза (принята 2026-10-22): **But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.**
+Фраза (принята 2026-10-22): **But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.** (~10 с)
 
-_Как у него на 0:17 «But it gets more brutal»: тот же план, рассказчик входит в
-кадр сбоку и смотрит в камеру. Дальше новый план - новое место, как у него
-каждая новая фраза._
+_По его кадрам Колизея (`ref-kolizey/kolizey-12.png`, `kolizey-24.png`):_
+- _0:17 «But it gets more brutal»: план не меняется, рассказчик входит в кадр сбоку и стоит, смотрит в камеру. Новый план начинается со следующей фразы._
+- _0:33 «forcing you to stay… multiple days»: крупнее на героя в камере, часы над головой крутятся, рассказчик выглядывает сбоку._
+- _0:26 «taken underneath the coliseum»: новое место - новый фон, герой уже в нём._
 
 | Слова | Кадр | Слои |
 |---|---|---|
-| *But it gets even worse.* | План 7 в цепях без изменений. Lucy входит справа в коридор перед решёткой, поворачивается к камере, серьёзная, указка опущена | кадр 7, Lucy |
-| *After three days without sleep,* | Тот же план. Песочные часы на выступе переворачиваются три раза подряд, факел каждый раз догорает и меняется. Она обвисла на цепи, голова падает, глаза красные | кадр 7, часы, она обвисла |
-| *if you still refused to confess,* | Крупно её лицо через прутья: мотает головой «нет», губы сжаты | она крупно, рот «нет» (рисует Вика) |
-| *they would tie you to a board,* | Новое место - пыточная под ратушей, вид сбоку. По центру наклонная деревянная доска с воротом у изголовья и у ног. Она лежит на доске в той же рваной рубахе, руки за головой, верёвки на запястьях и лодыжках. Lucy сбоку у стены | фон пыточная, она на доске, Lucy |
-| *and the executioner would slowly start turning the crank to stretch your body.* | Палач (тот же, что в сцене 6) у ворота, крутит рукоять. Верёвки натягиваются, доска скрипит, её лицо кривится. Камера медленно наезжает на лицо | фон пыточная, палач у ворота, она на доске, лицо от боли (Вика) |
+| *But it gets even worse.* | План 7 без изменений: она в цепях за решёткой. Lucy входит справа в коридор перед решёткой, останавливается, серьёзно смотрит в камеру, указка опущена | кадр 7, Lucy |
+| *After three days without sleep,* | Ближе на неё в цепях, как у него на 0:33. Над ней на стене те же часы, что в сцене 7, стрелка быстро крутится (три дня). Она обвисает на цепи, голова падает, под глазами чёрные круги. Lucy выглядывает справа из-за края решётки | кадр 7 ближе, часы, она обвисла, Lucy |
+| *if you still refused to confess,* | Крупно её лицо через прутья: поднимает голову и мотает «нет», губы сжаты | она крупно, лицо «нет» (Вика) |
+| *they would tie you to a board,* | Новое место: пыточная под ратушей, вид сбоку. Посередине наклонная доска-дыба с воротом у головы и у ног. Она уже лежит на доске в той же рубахе, руки вытянуты за голову, запястья и лодыжки обмотаны верёвками к воротам. Двое стражников затягивают узлы - один у рук, другой у ног, и отходят. Lucy у стены сзади | фон пыточная, она на доске, стражники |
+| *and the executioner would slowly start turning the crank* | Палач (тот же, что в сцене 6) встаёт к вороту у её головы и медленно крутит рукоять. Верёвка наматывается на ворот и натягивается струной | фон пыточная, она на доске, палач у ворота |
+| *to stretch your body.* | Её руки и ноги тянет в разные стороны, тело вытягивается по доске, лицо кривится от боли. Камера медленно наезжает на лицо, на последнем слове затемнение. Без крови и вывернутых суставов в кадре | она на доске (Вика тянет тело), лицо от боли (Вика) |
 
-Ассеты сцены 8 (после утверждения фразы):
+### Ассеты сцены 8
 
 | Что | Кто | Статус |
 |---|---|---|
 | Она обвисла на цепи (голова вниз, руки на цепи) в кадре 7 | генерация в кадре `7-v-cepyah` | ? |
-| Фон: пыточная в подвале ратуши сбоку, те же камни и своды, факелы, деревянная доска-дыба с двумя воротами | генерация | ? |
-| Она на доске в пыточной, руки за головой, верёвки, та же рубаха, лысая, точки от игл | генерация в фоне пыточной | ? |
-| Палач у ворота крутит рукоять (тот же палач из `kadry/6-palach-britva-igla.webp`) | генерация в фоне пыточной | ? |
-| Лицо: мотает головой, сжатые губы, гримаса боли | рисует Вика | ? |
+| Часы | те же, что в сцене 7 | ? |
+| Фон: пыточная в подвале ратуши, вид сбоку, дыба с двумя воротами, пустая | генерация | ? |
+| Она лежит на дыбе: руки за головой, верёвки на запястьях и лодыжках, та же рубаха, лысая, точки от игл | генерация в фоне пыточной | ? |
+| Двое стражников затягивают узлы у рук и у ног (те же стражники, что в сцене 7) | генерация в кадре с ней на дыбе | ? |
+| Палач у ворота у её головы, руки на рукояти (тот же палач, что в `kadry/6-palach-britva-igla.webp`) | генерация в кадре с ней на дыбе | ? |
+| Лица: мотает «нет», сжатые губы; гримаса боли | рисует Вика | ? |
+| Тянуть тело по доске (руки и ноги в стороны) | анимирует Вика | ? |
 
-Промпт фона пыточной (после утверждения):
+**Обвисла на цепи** - загрузить `kadry/7-v-cepyah.webp` и написать:
 
-> A dark 17th-century torture chamber in the stone cellar under a German town hall, side view. Same rough wet stone walls and low brick vault as a medieval dungeon, two iron torches on the wall giving warm flickering light, straw and puddles on the stone floor. In the center a heavy wooden rack: a long slanted plank on a wooden frame with a wooden windlass and crank handle at each end, thick ropes coiled on the rollers. Empty, no people. Photorealistic, cinematic, vertical 9:16.
+> Keep this exact image unchanged: same cell, bars, padlock, torch, wet floor, same camera angle and lighting. The same bald chained woman is now exhausted after days without sleep: her body sags forward and hangs on the short chain, arms still raised by the shackles, head dropped down onto her chest, knees bent. Photorealistic, vertical 9:16.
+
+**Фон пыточной:**
+
+> A dark 17th-century torture chamber in the stone cellar under a German town hall, side view. Same rough wet stone walls and low brick vault as a medieval dungeon, two iron torches on the wall giving warm flickering light, straw and puddles on the stone floor. In the center a heavy wooden rack: a long plank on a wooden frame, slightly slanted, with a wooden windlass and crank handle at each end, thick ropes coiled on the rollers. Empty, no people. Photorealistic, cinematic, vertical 9:16.
+
+**Она на дыбе** - загрузить готовый фон пыточной и написать:
+
+> Keep this exact image unchanged: same torture chamber, rack, torches and lighting. Add a bald, dirty young woman lying on her back on the rack plank, seen from the side: same torn dirty sleeveless linen dress, bare shoulders and arms covered in small red needle marks, arms stretched above her head, wrists bound with thick rope to the windlass at the head end, ankles bound with rope to the windlass at the foot end. Realistic body, no nudity, no blood. Photorealistic, vertical 9:16.
+
+Стражников и палача добавлять в этот кадр так же («Keep this exact image unchanged… Add…»), по одному, чтобы она не менялась.
 
 ## Раскадровка
 
