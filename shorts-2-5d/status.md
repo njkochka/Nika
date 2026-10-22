@@ -29,3 +29,4 @@
 - **2026-10-22** - сцена 8: Ника дала русский текст, фраза переведена: «But it got even worse. After three days without sleep, if you still denied your guilt, they would tie you to a board with ropes, and the executioner would slowly start pulling them tighter.»
 - **2026-10-22** - фраза сцены 8 принята: «But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.» Правила перевода записаны в `perevod.md`.
 - **2026-10-22** - сцена 8: раскадровка по кадрам Колизея (вход рассказчика на «But it gets…», часы над героем, новое место - пыточная), ассеты и промпты в README.
+- **2026-10-22** - сцена 7 собрана: Lucy слева, настенные часы над решёткой, стражник с пикой справа (`kadry/7-konec-sceny.webp`). Начало сцены 8 перестроено под этот кадр. Кадр «обвисла на цепи» готов.
