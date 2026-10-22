@@ -75,6 +75,7 @@ WIDE_FACE = 0.15            # лицо ниже 15% кадра - общий пл
 WIDE_ZOOM = 1.3
 TRACK_MAX_ZOOM = 1.8        # режим track: предел приближения общего плана (дальше мыло)
 STAGE_TORSO = 100           # яркость под лицом: выше - светлая одежда комика, ниже - тёмный зал
+COVER_MAX = 1.5             # режим track: план без комика (шоу показало зал) не длиннее - стоп-кадр
 STAGE_CLOSE = 0.25          # лицо выше этой доли кадра - крупный план, зрителей не бывает
 HAIR_SPLIT = 80             # яркость волос: ниже - гость (тёмные), выше - ведущий
 GUEST_DARK = True           # у гостя волосы темнее, чем у ведущего (config: guest_hair dark|light)
@@ -661,6 +662,16 @@ def track_camera(shots, source, det):
             shots[k].update(zoom=1.0, wide_zoom=zoom, fh=fh, cx=float(x[i] + cw / 2), cy=float(y[i] + ch * 0.38),
                             track=[[even(a), even(b)] for a, b in zip(x[i:i + n], y[i:i + n])])
             i += n
+    # шоу на секунду показало зал (ни лица, ни фигуры комика) - стоп-кадр последнего кадра
+    # с комиком, звук идёт дальше
+    for k, sh in enumerate(shots):
+        prev = shots[k - 1] if k else None
+        if (samples[k] == [] and STAGE_TORSO > 0 and sh["e"] - sh["s"] <= COVER_MAX and prev
+                and prev.get("track") and not prev.get("freeze")):
+            n = round((sh["e"] - sh["s"]) / FRAME)
+            shots[k] = dict(prev, s=prev["e"] - FRAME, e=prev["e"] - FRAME + n * FRAME, freeze=True,
+                            track=[prev["track"][-1]] * n)
+            shots[k].pop("piece_start", None)
     return shots
 
 
@@ -806,6 +817,8 @@ def render_video(source, shots, tmp):
     for i, sh in enumerate(shots):
         f = tmp / f"seg_{i:03d}.mp4"
         vf = vf_for(sh)
+        if sh.get("freeze"):  # стоп-кадр: первый кадр плана повторяется до конца
+            vf = "trim=end_frame=1,tpad=stop_mode=clone:stop=-1," + vf
         if sh.get("track"):  # рамка едет покадрово: команды crop по времени кадра
             cmd = tmp / f"seg_{i:03d}.cmd"
             cmd.write_text("\n".join(f"{j * FRAME:.3f} crop x {x}, crop y {y};"
