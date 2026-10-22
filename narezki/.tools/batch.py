@@ -8,6 +8,7 @@ batch.json: {"shorts": [{"name", "ranges": [[a, b, "h"|"g"]], "who"?, "fix_words
              "music_lufs"?: -20           - громкость музыки, тише = меньше (-20 - слышно, но под голосом),
              "banner"?: false             - без баннера FloatUp (по умолчанию ставится, banner.py, копия в готовые/<out>/с баннером/),
              "prefix"?: "Самойлова",
+             "desktop"?: "Орлов проба"       - папки на рабочем столе «<desktop> - без баннера» / «- с баннером» (по умолчанию prefix),
              "host"?: [[сек, "big"|"left"|"right"], ...]   - образцы лица ведущей в этом исходнике,
              "sub_style"?: "pill"          - стиль субтитров на всю пачку (см. make_short.py),
              "people"?: {"имя": {"guest": [[сек, ...]], "guest_hair": "dark"|"light", "host_side": "left"|"right"}}}
@@ -62,10 +63,20 @@ def mix(i, s, title):
     track = ROOT / "музыка" / s.get("music", spec.get("music", "ремиксы/snowfall (slowed).mp3"))
     code, out = sh([PY, "add_music.py", str(vid), str(track), str(mus), str(spec.get("music_lufs", -20))])
     if code: rep.append("!!! МУЗЫКА: " + out[-500:])
+    else: rep.append(to_desktop(mus, "без баннера"))
     if not s.get("banner", spec.get("banner", True)): return "\n".join(rep)
     code, out = sh([PY, "banner.py", str(mus), str(ban)]); rep.append(out)
     if code: rep.append("!!! БАННЕР: " + out[-500:])
+    else: rep.append(to_desktop(ban, "с баннером"))
     return "\n".join(rep)
+
+
+def to_desktop(f, kind):
+    """Копия готового ролика на рабочий стол Ники, файлом (не ярлыком): «Орлов - с баннером/01 - ....mp4»."""
+    d = Path.home() / "Desktop" / f"{spec.get('desktop', prefix)} - {kind}"
+    d.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(f, d / f.name)
+    return f"на рабочий стол: {d.name}/{f.name}"
 
 
 WORDS = None
