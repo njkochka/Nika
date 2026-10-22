@@ -286,7 +286,13 @@ _По его кадрам Колизея (`ref-kolizey/kolizey-12.png`, `kolizey
 
 > Keep this exact image unchanged: same torture chamber, rack, torches and lighting. Add a bald, dirty young woman lying on her back on the rack plank, seen from the side: same torn dirty sleeveless linen dress, bare shoulders and arms covered in small red needle marks, arms stretched above her head, wrists bound with thick rope to the windlass at the head end, ankles bound with rope to the windlass at the foot end. Realistic body, no nudity, no blood. Photorealistic, vertical 9:16.
 
-Стражников и палача добавлять в этот кадр так же («Keep this exact image unchanged… Add…»), по одному, чтобы она не менялась.
+**Стражники** - загрузить готовый кадр «она на дыбе» и написать:
+
+> Keep this exact image unchanged: same torture chamber, rack, lighting and the same woman tied on the rack. Add two 17th-century German town guards, same as in the dungeon: steel morion helmets, dark leather jerkins over dirty linen shirts, wide trousers, boots. One stands at the head end of the rack pulling tight the knot of the rope on her wrists, the other at the foot end pulling tight the knot on her ankles. Seen from the side, realistic bodies. Photorealistic, vertical 9:16.
+
+**Палач** - загрузить кадр «она на дыбе» (без стражников) и `kadry/6-palach-britva-igla.webp`, написать:
+
+> Keep the first image unchanged: same torture chamber, rack, lighting and the same woman tied on the rack. Add the executioner from the second image, same clothes and apron, no razor or needle in his hands. He stands at the windlass at the head end of the rack, seen from the side, both hands gripping the crank handle, leaning into it and slowly turning it, the rope on the roller pulled tight. Realistic body. Photorealistic, vertical 9:16.
 
 ## Раскадровка
 
