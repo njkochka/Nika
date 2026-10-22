@@ -5,6 +5,7 @@
 # Первые 5 роликов:          ... | bash -s 5
 # 9 роликов для rezanina:     curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
 # 9 роликов для нового ТТ:    ... | bash -s novyy
+# Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
 # Обе половины по папкам «резанина» и «новый тт» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
 N=~/Desktop/brain/projects/narezki
@@ -34,6 +35,7 @@ if [ "$1" = papki ]; then ./venv/bin/python batch.py "$E/batch.json" --music; ./
   open ~/Desktop/"резанина"; open ~/Desktop/"новый тт"; exit
 elif [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json"; open ~/Desktop/"резанина"
 elif [ "$1" = novyy ]; then ./venv/bin/python batch.py "$E/batch_novyy.json"; open ~/Desktop/"новый тт"
+elif [ "$1" = one ]; then ./venv/bin/python batch.py "$E/batch.json" --only="$2"; open ~/Desktop/"резанина"
 elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4; open ~/Desktop/"резанина"
 else ./venv/bin/python batch.py "$E/batch_proba.json"; open ~/Desktop/"Орлов проба - с баннером"; fi
 open "$E/frames/sheet.jpg"

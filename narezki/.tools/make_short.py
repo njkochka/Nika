@@ -1023,6 +1023,11 @@ def draw_chunk_pill(chunk, active, font, phase):
         lw = lw + (space if line else 0) + wd
         line.append((w, wd))
     lines.append((line, lw))
+    if len(lines) > 2:  # не больше двух строк (Ника): делим слова на две строки поровнее
+        ws = [(w, d.textlength(w["text"], font=font)) for w in chunk]
+        width = lambda part: sum(wd for _, wd in part) + space * (len(part) - 1)
+        k = min(range(1, len(ws)), key=lambda k: max(width(ws[:k]), width(ws[k:])))
+        lines = [(ws[:k], width(ws[:k])), (ws[k:], width(ws[k:]))]
     asc, desc = font.getmetrics()
     step = asc + desc + 18
     shadow = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
