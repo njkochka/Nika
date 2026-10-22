@@ -21,7 +21,7 @@ config.json:
   track      - true: рамка плавно ведёт лицо, масштаб постоянный (концерты, стендап)
   sub_style  - "pill": новые субтитры (Montserrat Black, слово под голосом на цветной плашке
                с «прыжком»; Rubik Black, белое слово на чёрной плашке - Орлов 2); "neo": шрифт Unbounded, звучащее слово бирюзовое с «прыжком», строка выше
-               (y 1150 вместо 1300); "word": по одному слову, Rubik Black, белое с чёрной обводкой (Орлов 2);
+               (y 1150 вместо 1300); "neo_yellow": то же, звучащее слово жёлтое (Орлов 2, новый ТТ); "word": по одному слову, Rubik Black, белое с чёрной обводкой (Орлов 2);
                без него - старые (Arial Black, жёлтое слово)
   stage_torso - порог яркости одежды под лицом комика (100); 0 - не отсеивать (тёмная одежда, зала нет)
   punch_in   - "auto" (по умолчанию): приближение 115% только там, где голова прыгнула;
@@ -1162,6 +1162,9 @@ def main():
     GUEST_DARK = cfg.get("guest_hair", "dark") == "dark"
     global SUB_STYLE
     SUB_STYLE = cfg.get("sub_style", SUB_STYLE)
+    global NEO_COLOR
+    if SUB_STYLE == "neo_yellow":  # neo, но звучащее слово жёлтое (Орлов 2, вторая половина - новый ТТ)
+        SUB_STYLE, NEO_COLOR = "neo", YELLOW
     global SILENCE_DB, SILENCE_MIN, MIN_PIECE  # концерт: шум зала выше -32 дБ, порог тишины свой
     SILENCE_DB, SILENCE_MIN = cfg.get("silence_db", SILENCE_DB), cfg.get("silence_min", SILENCE_MIN)
     MIN_PIECE = cfg.get("min_piece", MIN_PIECE)

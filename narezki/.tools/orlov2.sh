@@ -3,7 +3,8 @@
 # скрипты с GitHub кладутся отдельно в .tools_o2/ и orlov-2-gh/, venv, модели лиц, музыка и баннер - свои.
 # Проба (ролик про плинтус):  curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash
 # Первые 5 роликов:          ... | bash -s 5
-# Все 18 роликов:             curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
+# 9 роликов для rezanina:     curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
+# 9 роликов для нового ТТ:    ... | bash -s novyy
 set -e
 N=~/Desktop/brain/projects/narezki
 R=https://raw.githubusercontent.com/njkochka/Nika/main/narezki
@@ -16,7 +17,7 @@ if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https:
 fi
 for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
 for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f" -o "$T/fonts/$f"; done
-for f in words.json batch.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
+for f in words.json batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
 if [ ! -f "$E/source.mp4" ]; then
@@ -29,6 +30,7 @@ fi
 cd "$T"
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60
 if [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json"; open ~/Desktop/"Орлов - с баннером"
+elif [ "$1" = novyy ]; then ./venv/bin/python batch.py "$E/batch_novyy.json"; open ~/Desktop/"Орлов новый тт - с баннером"
 elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4; open ~/Desktop/"Орлов - с баннером"
 else ./venv/bin/python batch.py "$E/batch_proba.json"; open ~/Desktop/"Орлов проба - с баннером"; fi
 open "$E/frames/sheet.jpg"
