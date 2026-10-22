@@ -1,0 +1,122 @@
+{
+ "out": "Орлов/проба",
+ "prefix": "Орлов",
+ "music": "BONES - HDMI (PXVL Remix).mp3",
+ "music_lufs": -27.8,
+ "sub_style": "pill",
+ "host": [
+  [
+   493,
+   "big"
+  ],
+  [
+   2527,
+   "big"
+  ],
+  [
+   4454,
+   "big"
+  ],
+  [
+   6019,
+   "big"
+  ]
+ ],
+ "people": {
+  "orlov": {
+   "guest": [
+    [
+     493,
+     "big"
+    ],
+    [
+     2527,
+     "big"
+    ],
+    [
+     4454,
+     "big"
+    ],
+    [
+     6019,
+     "big"
+    ]
+   ]
+  }
+ },
+ "banner": false,
+ "shorts": [
+  {
+   "name": "плинтус",
+   "who": "orlov",
+   "yt": "Квартиру ремонтировали 18 месяцев из-за плинтуса (старые субтитры)",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true,
+    "stage_torso": 0,
+    "sub_style": "classic"
+   },
+   "ranges": [
+    [
+     917,
+     933,
+     "g"
+    ],
+    [
+     953,
+     1034,
+     "g"
+    ],
+    [
+     1040,
+     1048,
+     "g"
+    ],
+    [
+     1051,
+     1120,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "плинтус",
+   "who": "orlov",
+   "yt": "Квартиру ремонтировали 18 месяцев из-за плинтуса (новые субтитры)",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true,
+    "stage_torso": 0,
+    "sub_style": "pill"
+   },
+   "ranges": [
+    [
+     917,
+     933,
+     "g"
+    ],
+    [
+     953,
+     1034,
+     "g"
+    ],
+    [
+     1040,
+     1048,
+     "g"
+    ],
+    [
+     1051,
+     1120,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  }
+ ]
+}
