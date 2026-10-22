@@ -274,25 +274,29 @@ _По его кадрам Колизея (`ref-kolizey/kolizey-12.png`, `kolizey
 | Лица: крутит головой «нет» (поворот головы влево-вправо), сжатые губы; гримаса боли | рисует и анимирует Вика | ? |
 | Тянуть тело по доске (руки и ноги в стороны) | анимирует Вика | ? |
 
-**Обвисла на цепи** - загрузить `kadry/7-v-cepyah.webp` и написать:
+Промпты на русском. Генерировать по порядку: каждый следующий кадр строится на предыдущем.
 
-> Keep this exact image unchanged: same cell, bars, padlock, torch, wet floor, same camera angle and lighting. The same bald chained woman is now exhausted after days without sleep: her body sags forward and hangs on the short chain, arms still raised by the shackles, head dropped down onto her chest, knees bent. Photorealistic, vertical 9:16.
+**1. Обвисла на цепи.** Прикрепить: кадр сцены 7, где она лысая сидит в цепях за решёткой, руки подняты на цепи, факел слева, на двери большой замок (`kadry/7-v-cepyah.webp`).
 
-**Фон пыточной:**
+> Оставь эту картинку без изменений: та же камера, решётка, замок, факел, мокрый пол, тот же ракурс и свет. Та же лысая женщина в цепях теперь обессилела после нескольких суток без сна: тело обвисло вперёд на короткой цепи, руки всё так же подняты кандалами, голова упала на грудь, колени согнуты. Фотореализм, вертикально 9:16.
 
-> A dark 17th-century torture chamber in the stone cellar under a German town hall, side view. Same rough wet stone walls and low brick vault as a medieval dungeon, two iron torches on the wall giving warm flickering light, straw and puddles on the stone floor. In the center a heavy wooden rack: a long plank on a wooden frame, slightly slanted, with a wooden windlass and crank handle at each end, thick ropes coiled on the rollers. Empty, no people. Photorealistic, cinematic, vertical 9:16.
+**2. Фон пыточной.** Ничего не прикреплять.
 
-**Она на дыбе** - загрузить готовый фон пыточной и написать:
+> Тёмная пыточная XVII века в каменном подвале под немецкой ратушей, вид сбоку. Такие же грубые мокрые каменные стены и низкий кирпичный свод, как в темнице. На стене два железных факела, тёплый мерцающий свет, на каменном полу солома и лужи. По центру тяжёлая деревянная дыба: длинная доска на деревянной раме, чуть наклонная, у каждого конца деревянный ворот с рукоятью, на валах намотаны толстые верёвки. Пусто, людей нет. Фотореализм, кинематографично, вертикально 9:16.
 
-> Keep this exact image unchanged: same torture chamber, rack, torches and lighting. Add a bald, dirty young woman lying on her back on the rack plank, seen from the side: same torn dirty sleeveless linen dress, bare shoulders and arms covered in small red needle marks, arms stretched above her head, wrists bound with thick rope to the windlass at the head end, ankles bound with rope to the windlass at the foot end. Realistic body, no nudity, no blood. Photorealistic, vertical 9:16.
+**3. Она на дыбе.** Прикрепить: фон пыточной из шага 2.
 
-**Стражники** - загрузить готовый кадр «она на дыбе» и написать:
+> Оставь эту картинку без изменений: та же пыточная, дыба, факелы и свет. Добавь лысую грязную молодую женщину, она лежит на спине на доске дыбы, вид сбоку: то же рваное грязное льняное платье без рукавов, голые плечи и руки в мелких красных точках от игл, руки вытянуты за голову, запястья привязаны толстой верёвкой к вороту у изголовья, лодыжки привязаны верёвкой к вороту в ногах. Реалистичное тело, без наготы, без крови. Фотореализм, вертикально 9:16.
 
-> Keep this exact image unchanged: same torture chamber, rack, lighting and the same woman tied on the rack. Add two 17th-century German town guards, same as in the dungeon: steel morion helmets, dark leather jerkins over dirty linen shirts, wide trousers, boots. One stands at the head end of the rack pulling tight the knot of the rope on her wrists, the other at the foot end pulling tight the knot on her ankles. Seen from the side, realistic bodies. Photorealistic, vertical 9:16.
+**4. Стражники.** Прикрепить: кадр из шага 3, она на дыбе.
 
-**Палач** - загрузить кадр «она на дыбе» (без стражников) и `kadry/6-palach-britva-igla.webp`, написать:
+> Оставь эту картинку без изменений: та же пыточная, дыба, свет и та же женщина, привязанная к дыбе. Добавь двух немецких городских стражников XVII века, как в темнице: стальные шлемы-морионы, тёмные кожаные куртки поверх грязных льняных рубах, широкие штаны, сапоги. Один стоит у изголовья и затягивает узел верёвки на её запястьях, другой в ногах затягивает узел на лодыжках. Вид сбоку, реалистичные тела. Фотореализм, вертикально 9:16.
 
-> Keep the first image unchanged: same torture chamber, rack, lighting and the same woman tied on the rack. Add the executioner from the second image, same clothes and apron, no razor or needle in his hands. He stands at the windlass at the head end of the rack, seen from the side, both hands gripping the crank handle, leaning into it and slowly turning it, the rope on the roller pulled tight. Realistic body. Photorealistic, vertical 9:16.
+**5. Палач.** Прикрепить две картинки: первая - кадр из шага 3 (она на дыбе, без стражников), вторая - палач из сцены 6, который стоит в камере с бритвой и иглой в руках (`kadry/6-palach-britva-igla.webp`).
+
+> Первую картинку оставь без изменений: та же пыточная, дыба, свет и та же женщина, привязанная к дыбе. Добавь палача со второй картинки, та же одежда и фартук, без бритвы и иглы в руках. Он стоит у ворота у изголовья дыбы, вид сбоку, обеими руками держит рукоять, налегает на неё и медленно крутит, верёвка на валу натянута. Реалистичное тело. Фотореализм, вертикально 9:16.
+
+Часы - те же, что в сцене 7, отдельно не генерировать.
 
 ## Раскадровка
 
