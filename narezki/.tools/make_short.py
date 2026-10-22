@@ -19,6 +19,8 @@ config.json:
                min_piece - кусок короче не дробим (0.5)
   keep_pause - [[слово, слово], ...]: паузу между этими словами не вырезать (смех зала)
   track      - true: рамка плавно ведёт лицо, масштаб постоянный (концерты, стендап)
+  sub_style  - "pill": новые субтитры (Montserrat Black, слово под голосом на цветной плашке
+               с «прыжком»), без него - старые (Arial Black, жёлтое слово)
   stage_torso - порог яркости одежды под лицом комика (100); 0 - не отсеивать (тёмная одежда, зала нет)
   punch_in   - "auto" (по умолчанию): приближение 115% только там, где голова прыгнула;
                true - на каждой склейке; false - никогда
@@ -39,7 +41,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 TOOLS = Path(__file__).parent
 FPS = 25
@@ -80,6 +82,14 @@ FONT_SIZE = 60
 STROKE = 7
 SUB_Y = 1320
 YELLOW = (255, 214, 0)
+# стиль "pill": слово, которое звучит, - чёрным на яркой плашке и «прыгает» при появлении
+PILL_FONT = Path(__file__).parent / "fonts" / "Montserrat.ttf"  # OFL, с кириллицей
+PILL_SIZE = 74
+PILL_STROKE = 6
+PILL_Y = 1300
+PILL_COLOR = (255, 222, 32)          # плашка
+PILL_POP = [1.18, 1.1, 1.04]         # масштаб активного слова в первые кадры, дальше 1.0
+SUB_STYLE = "classic"
 
 
 def run(cmd, **kw):
@@ -953,8 +963,67 @@ def draw_chunk(chunk, active, font):
     return img
 
 
+def pill_font(size):
+    f = ImageFont.truetype(str(PILL_FONT), size)
+    f.set_variation_by_name("Black")
+    return f
+
+
+def draw_chunk_pill(chunk, active, font, phase):
+    """Слова белые с обводкой и мягкой тенью, звучащее - чёрное на жёлтой плашке.
+    phase - кадр от начала звучащего слова: первые кадры слово крупнее («прыжок»)."""
+    img = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    space = d.textlength(" ", font=font) + 6
+    lines, line, lw = [], [], 0
+    for w in chunk:
+        wd = d.textlength(w["text"], font=font)
+        if line and lw + space + wd > OUT_W - 180:
+            lines.append((line, lw))
+            line, lw = [], 0
+        lw = lw + (space if line else 0) + wd
+        line.append((w, wd))
+    lines.append((line, lw))
+    asc, desc = font.getmetrics()
+    step = asc + desc + 18
+    shadow = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow)
+    y, act = PILL_Y, None
+    for line, lw in lines:
+        x = (OUT_W - lw) / 2
+        for w, wd in line:
+            if w is active:
+                act = (x, y, wd)
+            else:
+                sd.text((x + 4, y + 7), w["text"], font=font, fill=(0, 0, 0, 170),
+                        stroke_width=PILL_STROKE, stroke_fill=(0, 0, 0, 170))
+                d.text((x, y), w["text"], font=font, fill=(255, 255, 255),
+                       stroke_width=PILL_STROKE, stroke_fill=(0, 0, 0))
+            x += wd + space
+        y += step
+    img = Image.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(6)), img)
+    if act:
+        x, y, wd = act
+        pad_x, pad_y = 18, 10
+        top = font.getbbox(active["text"])[1]
+        box = Image.new("RGBA", (int(wd + 2 * pad_x), int(asc + desc - top + 2 * pad_y)), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(box)
+        bd.rounded_rectangle((0, 0, box.width - 1, box.height - 1), radius=22, fill=PILL_COLOR)
+        bd.text((pad_x, pad_y - top), active["text"], font=font, fill=(0, 0, 0))
+        k = PILL_POP[phase] if phase < len(PILL_POP) else 1.0
+        if k != 1.0:
+            box = box.resize((round(box.width * k), round(box.height * k)), Image.LANCZOS)
+        cx, cy = x + wd / 2, y + top + (asc + desc - top) / 2
+        sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        sh.paste(Image.new("RGBA", box.size, (0, 0, 0, 150)), (round(cx - box.width / 2 + 4), round(cy - box.height / 2 + 8)), box)
+        img = Image.alpha_composite(img, sh.filter(ImageFilter.GaussianBlur(8)))
+        img.paste(box, (round(cx - box.width / 2), round(cy - box.height / 2)), box)
+    return img
+
+
 def burn_subtitles(video, audio, chunks, out):
-    font = ImageFont.truetype(FONT, FONT_SIZE)
+    pill = SUB_STYLE == "pill"
+    font = pill_font(PILL_SIZE) if pill else ImageFont.truetype(FONT, FONT_SIZE)
     events = []
     for c in chunks:
         for j, w in enumerate(c):
@@ -976,9 +1045,11 @@ def burn_subtitles(video, audio, chunks, out):
         t = n * FRAME + FRAME / 2
         ev = next((e for e in events if e[0] <= t < e[1]), None)
         if ev:
-            key = (id(ev[2]), id(ev[3]))
+            phase = min(int((t - ev[3]["s"]) / FRAME), len(PILL_POP)) if pill else 0
+            key = (id(ev[2]), id(ev[3]), phase)
             if key not in cache:
-                cache[key] = draw_chunk(ev[2], ev[3], font)
+                cache[key] = draw_chunk_pill(ev[2], ev[3], font, max(phase, 0)) if pill \
+                    else draw_chunk(ev[2], ev[3], font)
             frame = Image.frombuffer("RGB", (OUT_W, OUT_H), buf)
             frame.paste(cache[key], (0, 0), cache[key])
             buf = frame.tobytes()
@@ -996,6 +1067,8 @@ def main():
     HOST_SIDE = cfg.get("host_side", HOST_SIDE)
     global GUEST_DARK
     GUEST_DARK = cfg.get("guest_hair", "dark") == "dark"
+    global SUB_STYLE
+    SUB_STYLE = cfg.get("sub_style", SUB_STYLE)
     global SILENCE_DB, SILENCE_MIN, MIN_PIECE  # концерт: шум зала выше -32 дБ, порог тишины свой
     SILENCE_DB, SILENCE_MIN = cfg.get("silence_db", SILENCE_DB), cfg.get("silence_min", SILENCE_MIN)
     MIN_PIECE = cfg.get("min_piece", MIN_PIECE)

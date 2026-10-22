@@ -9,6 +9,7 @@ batch.json: {"shorts": [{"name", "ranges": [[a, b, "h"|"g"]], "who"?, "fix_words
              "banner"?: false             - без баннера FloatUp (по умолчанию ставится, banner.py, копия в готовые/<out>/с баннером/),
              "prefix"?: "Самойлова",
              "host"?: [[сек, "big"|"left"|"right"], ...]   - образцы лица ведущей в этом исходнике,
+             "sub_style"?: "pill"          - стиль субтитров на всю пачку (см. make_short.py),
              "people"?: {"имя": {"guest": [[сек, ...]], "guest_hair": "dark"|"light", "host_side": "left"|"right"}}}
   yt - название ролика для YouTube (коротко, без мата), им же называется файл.
   who - ключ из people (кто гость в этом ролике); mom: true - старый ключ для пачки 2.
@@ -96,6 +97,7 @@ def one(i_s):
            "host_ranges": [[a, b] for a, b, w in s["ranges"] if w == "h"],
            "fix_words": s.get("fix_words", {}),
            "faces": {"host": HOST}}
+    if spec.get("sub_style"): cfg["sub_style"] = spec["sub_style"]  # стиль субтитров на всю пачку
     cfg.update(s.get("cfg", {}))  # ручные правки ролика: punch_in, framing (камера на нужного человека) и т.п.
     p = PEOPLE[s.get("who", "mom" if s.get("mom") else "oksana")]
     cfg["faces"]["guest"] = p["guest"]
