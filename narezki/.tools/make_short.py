@@ -153,16 +153,23 @@ def ranges_to_intervals(words, ranges, source, overrides=None):
         # Whisper часто ставит конец слова раньше, чем оно затихает («шато» обрезалось).
         # Если после слова пауза - продлеваем до места, где звук действительно стих.
         if b + 1 < len(words) and words[b + 1]["s"] - words[b]["e"] > 0.4:
-            lv = loudness(source, words[b]["e"], min(words[b]["e"] + 0.5, words[b + 1]["s"] - 0.05))
-            peak = max(v for _, v in loudness(source, words[b]["s"], words[b]["e"]))
-            for k in range(len(lv) - 9):
-                if all(v < peak - 25 for _, v in lv[k:k + 10]):
-                    e = max(e, lv[k][0] + 0.05)
-                    break
+            e = max(e, faded(source, words[b], words[b + 1]["s"]) or e)
         if str(b) in overrides.get("end", {}):
             e = overrides["end"][str(b)]
         out.append((s, e))
     return out
+
+
+def faded(source, w, nxt):
+    """Где слово w действительно стихло (не дальше 0.5 сек и следующего слова); None - не стихло."""
+    if nxt - 0.05 - w["e"] < 0.1:  # следующее слово вплотную - смотреть негде
+        return None
+    lv = loudness(source, w["e"], min(w["e"] + 0.5, nxt - 0.05))
+    peak = max(v for _, v in loudness(source, w["s"], max(w["e"], w["s"] + 0.03)))
+    for k in range(len(lv) - 9):
+        if all(v < peak - 25 for _, v in lv[k:k + 10]):
+            return lv[k][0] + 0.05
+    return None
 
 
 def loudness(source, t0, t1, step=0.01, win=0.02):
@@ -239,7 +246,7 @@ def silences(source, s, e):
     return res
 
 
-def split_by_silence(source, intervals):
+def split_by_silence(source, intervals, starts=(), ends=()):
     pieces = []
     for s, e in intervals:
         cur = s
@@ -247,6 +254,14 @@ def split_by_silence(source, intervals):
             if any(a - 0.15 <= ss < b for a, b in KEEP_PAUSES):
                 continue  # пауза для смеха зала: оставляем целиком
             cut_s, cut_e = ss + SILENCE_KEEP, se - SILENCE_KEEP
+            # тихое начало слова ниже порога тишины («не» в «нестабильная») - пауза
+            # кончается уже внутри слова; режем не ближе 0.15 сек к началу слова по Whisper
+            cut_e = min([cut_e] + [w - 0.15 for w in starts if ss < w < se])
+            # и тихий конец слова: вопрос «...про микрофлору?» затихает ниже порога тишины,
+            # пауза начинается внутри слова - режем только там, где слово действительно стихло
+            for w, nxt in ends:
+                if ss - 0.3 < w["e"] < se and nxt - w["e"] > 0.15:
+                    cut_s = max(cut_s, faded(source, w, nxt) or min(w["e"] + 0.5, nxt - 0.05))
             # паузу вырезаем, только если по обе стороны остаётся не меньше MIN_PIECE:
             # обрывки по 0.2 сек дёргают картинку, а хвост короче 0.15 раньше выкидывался вместе со словом
             if cut_s - cur >= MIN_PIECE and e - cut_e >= MIN_PIECE and cut_e > cut_s:
@@ -878,6 +893,7 @@ MAT = [
     (re.compile(r"МУДА?К|МУДИЛ"), lambda m: "М*" + m.group(0)[2:]),
     (re.compile(r"ПИД[ОА]Р"), lambda m: "П*" + m.group(0)[2:]),
     (re.compile(r"ЗАЛУП"), "ЗАЛ*П"),
+    (re.compile(r"ДРОЧ"), "ДР*Ч"),
     (re.compile(r"(?<![А-ЯЁ])СУК(?=[АИУЕ]?(?![А-ЯЁ]))"), "С*К"),
 ]
 
@@ -894,6 +910,7 @@ RISK = [
     (re.compile(r"СЕКС"), 2),
     (re.compile(r"НАРКО(?=[ТМШ])"), 2),
     (re.compile(r"(?<![А-ЯЁ])ТРУП"), 2),
+    (re.compile(_B + r"(ТРАХ)"), 2),  # не трогаем страх, страховку
 ]
 
 
@@ -918,6 +935,8 @@ def subtitle_chunks(words, ranges, pieces, fixes, fix_words):
     placed = []
     for i in sorted(keep):
         w = words[i]
+        if w["e"] - w["s"] < 0.05:  # Whisper даёт слову нулевую длину («у меня мать») - слово выпадало
+            w = dict(w, e=w["s"] + 0.05)
         # кусок, где слова звучит больше всего: таймкоды Whisper часто захватывают паузу после
         # слова, и середина слова попадает в вырезанную паузу - раньше такое слово выпадало
         best = max(timeline, key=lambda p: min(w["e"], p[1]) - max(w["s"], p[0]))
@@ -1185,7 +1204,9 @@ def main():
 
     global KEEP_PAUSES  # "keep_pause": [[слово, слово], ...] - паузу между ними не вырезать
     KEEP_PAUSES = [(words[a]["e"], words[b]["s"]) for a, b in cfg.get("keep_pause", [])]
-    pieces = split_by_silence(source, ranges_to_intervals(words, ranges, source, cfg.get("cut_at", {})))
+    pieces = split_by_silence(source, ranges_to_intervals(words, ranges, source, cfg.get("cut_at", {})),
+                              [words[i]["s"] for i in keep_words],
+                              [(words[i], words[i + 1]["s"]) for i in keep_words if i + 1 < len(words)])
     print(f"кусков: {len(pieces)}, длина: {sum(e - s for s, e in pieces):.1f} сек")
 
     spoken = [(words[i]["s"], words[i]["e"]) for i in sorted(keep_words)]
