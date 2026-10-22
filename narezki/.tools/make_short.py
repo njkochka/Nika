@@ -20,7 +20,7 @@ config.json:
   keep_pause - [[слово, слово], ...]: паузу между этими словами не вырезать (смех зала)
   track      - true: рамка плавно ведёт лицо, масштаб постоянный (концерты, стендап)
   sub_style  - "pill": новые субтитры (Montserrat Black, слово под голосом на цветной плашке
-               с «прыжком»); "neo": шрифт Unbounded, звучащее слово бирюзовое с «прыжком», строка выше
+               с «прыжком», Орлов 2: белое слово на чёрной плашке); "neo": шрифт Unbounded, звучащее слово бирюзовое с «прыжком», строка выше
                (y 1150 вместо 1300); "word": по одному слову, Rubik Black, белое с чёрной обводкой (Орлов 2);
                без него - старые (Arial Black, жёлтое слово)
   stage_torso - порог яркости одежды под лицом комика (100); 0 - не отсеивать (тёмная одежда, зала нет)
@@ -84,12 +84,14 @@ FONT_SIZE = 60
 STROKE = 7
 SUB_Y = 1320
 YELLOW = (255, 214, 0)
-# стиль "pill": слово, которое звучит, - чёрным на яркой плашке и «прыгает» при появлении
+# стиль "pill": слово, которое звучит, - белым на чёрной плашке и «прыгает» при появлении (Орлов 2)
 PILL_FONT = Path(__file__).parent / "fonts" / "Montserrat.ttf"  # OFL, с кириллицей
-PILL_SIZE = 74
-PILL_STROKE = 6
+PILL_SIZE = 60
+PILL_STROKE = 5
+PILL_W = 640                         # ширина строки: 2-3 слова встают в две строки, как раньше
 PILL_Y = 1300
-PILL_COLOR = (255, 222, 32)          # плашка
+PILL_COLOR = (0, 0, 0)               # плашка
+PILL_TEXT = (255, 255, 255)          # слово на плашке
 PILL_POP = [1.18, 1.1, 1.04]         # масштаб активного слова в первые кадры, дальше 1.0
 # стиль "neo": шрифт Unbounded, слова белые с мягкой тенью, звучащее - бирюзовое и «прыгает»,
 # строка выше и уже, чем у остальных стилей (не залезает под кнопки ТикТока справа)
@@ -996,7 +998,7 @@ def draw_chunk_pill(chunk, active, font, phase):
     lines, line, lw = [], [], 0
     for w in chunk:
         wd = d.textlength(w["text"], font=font)
-        if line and lw + space + wd > OUT_W - 180:
+        if line and lw + space + wd > PILL_W:
             lines.append((line, lw))
             line, lw = [], 0
         lw = lw + (space if line else 0) + wd
@@ -1027,7 +1029,7 @@ def draw_chunk_pill(chunk, active, font, phase):
         box = Image.new("RGBA", (int(wd + 2 * pad_x), int(asc + desc - top + 2 * pad_y)), (0, 0, 0, 0))
         bd = ImageDraw.Draw(box)
         bd.rounded_rectangle((0, 0, box.width - 1, box.height - 1), radius=22, fill=PILL_COLOR)
-        bd.text((pad_x, pad_y - top), active["text"], font=font, fill=(0, 0, 0))
+        bd.text((pad_x, pad_y - top), active["text"], font=font, fill=PILL_TEXT)
         k = PILL_POP[phase] if phase < len(PILL_POP) else 1.0
         if k != 1.0:
             box = box.resize((round(box.width * k), round(box.height * k)), Image.LANCZOS)
