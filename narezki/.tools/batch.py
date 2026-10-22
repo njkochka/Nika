@@ -10,10 +10,12 @@ batch.json: {"shorts": [{"name", "ranges": [[a, b, "h"|"g"]], "who"?, "fix_words
              "banner"?: false             - без баннера FloatUp (по умолчанию ставится, banner.py, копия в готовые/<out>/с баннером/),
              "prefix"?: "Самойлова",
              "desktop"?: "Орлов проба"       - папка на рабочем столе «<desktop> - с баннером» (по умолчанию prefix),
+             "desktop_dir"?: "резанина"     - папка на рабочем столе ровно с таким именем, без приписки,
              "host"?: [[сек, "big"|"left"|"right"], ...]   - образцы лица ведущей в этом исходнике,
              "sub_style"?: "pill"          - стиль субтитров на всю пачку (см. make_short.py),
              "people"?: {"имя": {"guest": [[сек, ...]], "guest_hair": "dark"|"light", "host_side": "left"|"right"}}}
   yt - название ролика для YouTube (коротко, без мата), им же называется файл.
+  n - номер темы из istorii.md: файл «04 - название.mp4» (без n - следующий свободный номер).
   who - ключ из people (кто гость в этом ролике); mom: true - старый ключ для пачки 2.
 Итог: готовые/<out>/ - ролики с музыкой с номером («12 - название.mp4»), без подпапок; без музыки - выпуск/без музыки/. Лог - выпуск/<batch>_log.txt.
 """
@@ -47,8 +49,15 @@ def sh(cmd):
                     if not any(x in l for x in ("setPreferableTarget", "Warning", "Fetching", "WARN")))
     return r.returncode, out
 
-def numbered(title):
-    """Имя готового ролика с номером: «12 - название.mp4». Уже был - тот же номер, новый - следующий."""
+def numbered(title, n=None):
+    """Имя готового ролика с номером: «12 - название.mp4». Уже был - тот же номер, новый - следующий.
+    n - номер темы из istorii.md: тот же ролик под старым номером удаляется из готовые/."""
+    if n:
+        name = f"{n:02d} - {title}.mp4"
+        for d in (READY, READY / "с баннером"):
+            for f in d.glob(f"* - {title}.mp4"):
+                if f.name != name: f.unlink()
+        return name
     nums = []
     for f in READY.glob("* - *.mp4"):
         n, _, rest = f.name.partition(" - ")
@@ -60,7 +69,7 @@ def numbered(title):
 def mix(i, s, title):
     """Музыка и баннер поверх готового ролика (видео не пересобирается)."""
     rep = []
-    vid = RAW / f"{title}.mp4"; mus = READY / numbered(title); ban = READY / "с баннером" / mus.name
+    vid = RAW / f"{title}.mp4"; mus = READY / numbered(title, s.get("n")); ban = READY / "с баннером" / mus.name
     track = ROOT / "музыка" / s.get("music", spec.get("music", "ремиксы/snowfall (slowed).mp3"))
     code, out = sh([PY, "add_music.py", str(vid), str(track), str(mus), str(spec.get("music_lufs", -20))])
     if code: rep.append("!!! МУЗЫКА: " + out[-500:])
@@ -78,6 +87,7 @@ def to_desktop(f, kind):
     тогда папка одна, без приписки: «Выложить потом/01 - ....mp4»."""
     name = spec.get("desktop", prefix)
     d = Path.home() / "Desktop" / (name if not spec.get("banner", True) else f"{name} - {kind}")
+    if spec.get("desktop_dir"): d = Path.home() / "Desktop" / spec["desktop_dir"]
     d.mkdir(parents=True, exist_ok=True)
     shutil.copy2(f, d / f.name)
     return f"на рабочий стол: {d.name}/{f.name}"
@@ -119,7 +129,7 @@ def one(i_s):
     cfg.update({k: v for k, v in p.items() if k != "guest"})
     cp = ep / f"{spec_path.stem}_{i:02d}.json"
     rep = [f"######## {title}"]
-    if MUSIC_ONLY:
+    if MUSIC_ONLY and (RAW / f"{title}.mp4").exists():  # ролика без музыки ещё нет - собрать целиком
         return "\n".join(rep + [mix(i, s, title)])
     json.dump(cfg, open(cp, "w"), ensure_ascii=False, indent=1)
     if spec.get("clean", True) and s.get("clean", True):  # паразиты, запинки, оговорки
