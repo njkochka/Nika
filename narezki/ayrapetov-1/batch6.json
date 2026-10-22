@@ -1,0 +1,307 @@
+{
+ "out": "Айрапетов",
+ "prefix": "Айрапетов",
+ "host": [
+  [
+   1790,
+   "big"
+  ],
+  [
+   1900,
+   "big"
+  ],
+  [
+   1930,
+   "big"
+  ]
+ ],
+ "people": {
+  "andrey": {
+   "guest": [
+    [
+     1790,
+     "big"
+    ],
+    [
+     1900,
+     "big"
+    ],
+    [
+     1930,
+     "big"
+    ]
+   ]
+  }
+ },
+ "music": "BONES - HDMI (PXVL Remix).mp3",
+ "music_lufs": -27.8,
+ "shorts": [
+  {
+   "name": "поддержка",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Почему не надо поддерживать комика",
+   "ranges": [
+    [
+     477,
+     537,
+     "g"
+    ],
+    [
+     600,
+     701,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "дублин",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Зритель в Дублине: «У меня так же было»",
+   "ranges": [
+    [
+     943,
+     1061,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "первые абьюзивные",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Первая девушка отвечала всем его требованиям: наркоманка со справочкой",
+   "ranges": [
+    [
+     1062,
+     1124,
+     "g"
+    ],
+    [
+     1140,
+     1243,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "довели до измены",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Женщину до измены нужно довести",
+   "ranges": [
+    [
+     2710,
+     2865,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "деревенские",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Деревенские не обижаются на аборты",
+   "ranges": [
+    [
+     4570,
+     4709,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "дудь",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Если бы она родила, он бы уже был у Дудя",
+   "ranges": [
+    [
+     4711,
+     4721,
+     "g"
+    ],
+    [
+     4760,
+     4958,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "скажи да",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Просто скажи «да»",
+   "ranges": [
+    [
+     5618,
+     5726,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "санитары леса",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Женщины - санитары леса",
+   "ranges": [
+    [
+     6288,
+     6405,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "два бомжа",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Первые здоровые отношения - два бомжа строят дом",
+   "ranges": [
+    [
+     6610,
+     6742,
+     "g"
+    ],
+    [
+     6809,
+     6863,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "травмы",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Идеальные отношения - когда состыковались травмами",
+   "ranges": [
+    [
+     6864,
+     6950,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "иуда",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Иуда не предал, а спродюсировал",
+   "ranges": [
+    [
+     8838,
+     8988,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "карпман",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "Треугольник Карпмана для него - твистер",
+   "ranges": [
+    [
+     9026,
+     9111,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  },
+  {
+   "name": "виноваты двое",
+   "who": "andrey",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true
+   },
+   "yt": "В измене всегда виноваты двое",
+   "ranges": [
+    [
+     9118,
+     9298,
+     "g"
+    ]
+   ],
+   "fix_words": {}
+  }
+ ]
+}
