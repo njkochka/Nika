@@ -160,7 +160,18 @@
     "silence_min": 0.15,
     "min_piece": 0.5,
     "track": true,
-    "stage_torso": 0
+    "stage_torso": 0,
+    "cut_at": {
+     "end": {
+      "2346": 1093.42
+     }
+    },
+    "keep_pause": [
+     [
+      2346,
+      2347
+     ]
+    ]
    },
    "ranges": [
     [
