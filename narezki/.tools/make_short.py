@@ -20,7 +20,8 @@ config.json:
   keep_pause - [[слово, слово], ...]: паузу между этими словами не вырезать (смех зала)
   track      - true: рамка плавно ведёт лицо, масштаб постоянный (концерты, стендап)
   sub_style  - "pill": новые субтитры (Montserrat Black, слово под голосом на цветной плашке
-               с «прыжком»), без него - старые (Arial Black, жёлтое слово)
+               с «прыжком»); "neo": шрифт Unbounded, звучащее слово бирюзовое с «прыжком», строка выше
+               (y 1150 вместо 1300); без него - старые (Arial Black, жёлтое слово)
   stage_torso - порог яркости одежды под лицом комика (100); 0 - не отсеивать (тёмная одежда, зала нет)
   punch_in   - "auto" (по умолчанию): приближение 115% только там, где голова прыгнула;
                true - на каждой склейке; false - никогда
@@ -89,6 +90,16 @@ PILL_STROKE = 6
 PILL_Y = 1300
 PILL_COLOR = (255, 222, 32)          # плашка
 PILL_POP = [1.18, 1.1, 1.04]         # масштаб активного слова в первые кадры, дальше 1.0
+# стиль "neo": шрифт Unbounded, слова белые с мягкой тенью, звучащее - бирюзовое и «прыгает»,
+# строка выше и уже, чем у остальных стилей (не залезает под кнопки ТикТока справа)
+NEO_FONT = Path(__file__).parent / "fonts" / "Unbounded.ttf"  # OFL, с кириллицей
+NEO_SIZE = 56
+NEO_STROKE = 4
+NEO_Y = 1150
+NEO_W = 860                          # ширина строки, дальше перенос (кнопки ТикТока справа не задевает)
+NEO_COLOR = (0, 236, 220)            # звучащее слово: на розовом и тёмном фоне видно, не жёлтое
+NEO_JUMP = [-14, -7, -3]             # «прыжок» звучащего слова вверх (px) в первые кадры: шрифт широкий,
+                                     # увеличение как у pill наезжало бы на соседние слова
 SUB_STYLE = "classic"
 
 
@@ -1021,9 +1032,58 @@ def draw_chunk_pill(chunk, active, font, phase):
     return img
 
 
+def neo_font(size):
+    f = ImageFont.truetype(str(NEO_FONT), size)
+    f.set_variation_by_name("Black")
+    return f
+
+
+def draw_chunk_neo(chunk, active, font, phase):
+    """Слова белые с тонкой обводкой и мягкой тенью, звучащее - бирюзовое.
+    phase - кадр от начала звучащего слова: первые кадры слово подпрыгивает вверх."""
+    img = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    space = d.textlength(" ", font=font) + 8
+    lines, line, lw = [], [], 0
+    for w in chunk:
+        wd = d.textlength(w["text"], font=font)
+        if line and lw + space + wd > NEO_W:
+            lines.append((line, lw))
+            line, lw = [], 0
+        lw = lw + (space if line else 0) + wd
+        line.append((w, wd))
+    lines.append((line, lw))
+    asc, desc = font.getmetrics()
+    step = asc + desc + 12
+    shadow = Image.new("RGBA", (OUT_W, OUT_H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow)
+    y, act = NEO_Y, None
+    for line, lw in lines:
+        x = (OUT_W - lw) / 2
+        for w, wd in line:
+            sd.text((x + 3, y + 6), w["text"], font=font, fill=(0, 0, 0, 200),
+                    stroke_width=NEO_STROKE + 2, stroke_fill=(0, 0, 0, 200))
+            if w is active:
+                act = (x, y, wd)
+            else:
+                d.text((x, y), w["text"], font=font, fill=(255, 255, 255),
+                       stroke_width=NEO_STROKE, stroke_fill=(0, 0, 0))
+            x += wd + space
+        y += step
+    img = Image.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(7)), img)
+    if act:
+        x, y, wd = act
+        y += NEO_JUMP[phase] if phase < len(NEO_JUMP) else 0
+        ImageDraw.Draw(img).text((x, y), active["text"], font=font, fill=NEO_COLOR,
+                                 stroke_width=NEO_STROKE, stroke_fill=(0, 0, 0))
+    return img
+
+
 def burn_subtitles(video, audio, chunks, out):
-    pill = SUB_STYLE == "pill"
-    font = pill_font(PILL_SIZE) if pill else ImageFont.truetype(FONT, FONT_SIZE)
+    pill = SUB_STYLE in ("pill", "neo")  # оба стиля с «прыжком» звучащего слова
+    font = {"pill": lambda: pill_font(PILL_SIZE), "neo": lambda: neo_font(NEO_SIZE)}.get(
+        SUB_STYLE, lambda: ImageFont.truetype(FONT, FONT_SIZE))()
+    draw = {"pill": draw_chunk_pill, "neo": draw_chunk_neo}.get(SUB_STYLE)
     events = []
     for c in chunks:
         for j, w in enumerate(c):
@@ -1045,10 +1105,10 @@ def burn_subtitles(video, audio, chunks, out):
         t = n * FRAME + FRAME / 2
         ev = next((e for e in events if e[0] <= t < e[1]), None)
         if ev:
-            phase = min(int((t - ev[3]["s"]) / FRAME), len(PILL_POP)) if pill else 0
+            phase = min(int((t - ev[3]["s"]) / FRAME), 3) if pill else 0  # дальше «прыжка» нет ни у pill, ни у neo
             key = (id(ev[2]), id(ev[3]), phase)
             if key not in cache:
-                cache[key] = draw_chunk_pill(ev[2], ev[3], font, max(phase, 0)) if pill \
+                cache[key] = draw(ev[2], ev[3], font, max(phase, 0)) if draw \
                     else draw_chunk(ev[2], ev[3], font)
             frame = Image.frombuffer("RGB", (OUT_W, OUT_H), buf)
             frame.paste(cache[key], (0, 0), cache[key])

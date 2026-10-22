@@ -4,6 +4,7 @@
 Запуск: venv/bin/python batch.py ../выпуск/batch.json [параллельно=1] [--plan - только длины, без рендера] [--music - только музыка] [--only=N]
 batch.json: {"shorts": [{"name", "ranges": [[a, b, "h"|"g"]], "who"?, "fix_words"?}],
              "out"?: "часть 2"            - подпапка в готовые/ (по умолчанию сама готовые/),
+             "raw"?: "без музыки/v2"      - куда класть ролики без музыки (по умолчанию выпуск/без музыки/),
              "music"?: "ремиксы/snowfall (slowed).mp3" - трек из музыка/ (у ролика тоже можно "music"),
              "music_lufs"?: -20           - громкость музыки, тише = меньше (-20 - слышно, но под голосом),
              "banner"?: false             - без баннера FloatUp (по умолчанию ставится, banner.py, копия в готовые/<out>/с баннером/),
@@ -29,7 +30,7 @@ ONLY = [int(a[7:]) for a in sys.argv[2:] if a.startswith("--only=")]  # --only=0
 args = [a for a in sys.argv[2:] if a not in ("--plan", "--music") and not a.startswith("--only=")]
 par = int(args[0]) if args else 1  # Мак на 8 ГБ: больше одного ролика за раз - зависает
 spec = json.load(open(spec_path))
-ROOT = T.parent; READY = ROOT / "готовые" / spec.get("out", ""); RAW = ep / "без музыки"
+ROOT = T.parent; READY = ROOT / "готовые" / spec.get("out", ""); RAW = ep / spec.get("raw", "без музыки")
 for d in (READY, RAW): d.mkdir(parents=True, exist_ok=True)
 FIX = {"жиган": "Джиган", "жигану": "Джигану", "жиганом": "Джиганом", "жигана": "Джигана"}
 HOST = [[1664, "big"], [8643, "big"], [2610.8, "left"], [2813.5, "left"], [7265, "left"]]
@@ -63,6 +64,7 @@ def mix(i, s, title):
     track = ROOT / "музыка" / s.get("music", spec.get("music", "ремиксы/snowfall (slowed).mp3"))
     code, out = sh([PY, "add_music.py", str(vid), str(track), str(mus), str(spec.get("music_lufs", -20))])
     if code: rep.append("!!! МУЗЫКА: " + out[-500:])
+    elif not spec.get("banner", True) and spec.get("desktop"): rep.append(to_desktop(mus, "без баннера"))
     if not s.get("banner", spec.get("banner", True)): return "\n".join(rep)
     code, out = sh([PY, "banner.py", str(mus), str(ban)]); rep.append(out)
     if code: rep.append("!!! БАННЕР: " + out[-500:])
@@ -72,8 +74,10 @@ def mix(i, s, title):
 
 def to_desktop(f, kind):
     """Копия ролика с баннером на рабочий стол Ники, файлом (не ярлыком): «Орлов - с баннером/01 - ....mp4».
-    Ролики без баннера на стол не идут - только в готовые/."""
-    d = Path.home() / "Desktop" / f"{spec.get('desktop', prefix)} - {kind}"
+    Без баннера на стол не идут, кроме пачки "banner": false с явной папкой "desktop" -
+    тогда папка одна, без приписки: «Выложить потом/01 - ....mp4»."""
+    name = spec.get("desktop", prefix)
+    d = Path.home() / "Desktop" / (name if not spec.get("banner", True) else f"{name} - {kind}")
     d.mkdir(parents=True, exist_ok=True)
     shutil.copy2(f, d / f.name)
     return f"на рабочий стол: {d.name}/{f.name}"
