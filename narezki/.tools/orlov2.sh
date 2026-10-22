@@ -2,6 +2,7 @@
 # Орлов 2 на Маке Ники, где папка нарезок не связана с GitHub. Ничего локального не меняет:
 # скрипты с GitHub кладутся отдельно в .tools_o2/ и orlov-2-gh/, venv, модели лиц, музыка и баннер - свои.
 # Проба (ролик про плинтус):  curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash
+# Первые 5 роликов:          ... | bash -s 5
 # Все 18 роликов:             curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
 set -e
 N=~/Desktop/brain/projects/narezki
@@ -28,5 +29,6 @@ fi
 cd "$T"
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60
 if [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json"; open ~/Desktop/"Орлов - с баннером"
+elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4; open ~/Desktop/"Орлов - с баннером"
 else ./venv/bin/python batch.py "$E/batch_proba.json"; open ~/Desktop/"Орлов проба - с баннером"; fi
 open "$E/frames/sheet.jpg"
