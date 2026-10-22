@@ -507,12 +507,30 @@ def on_stage(frame, f):
     return y1 - y0 > h and x1 > x0 and float(np.median(g[y0:y1, x0:x1])) > STAGE_TORSO
 
 
+def body(frame):
+    """Комик в светлой одежде, когда лица не видно: (x верха фигуры, y верха, ширина) в 1280x720.
+    Самое большое светлое пятно; x - по верхней четверти, там голова (и у согнувшегося)."""
+    g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    m = cv2.morphologyEx((g > 150).astype(np.uint8), cv2.MORPH_OPEN, np.ones((7, 7), np.uint8))
+    n, lab, st, _ = cv2.connectedComponentsWithStats(m)
+    if n < 2:
+        return None
+    j = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    x, y, w, h, area = st[j]
+    if area < 0.01 * g.size:
+        return None
+    top = lab[y:y + max(1, h // 4)] == j
+    xs = np.nonzero(top)[1]
+    return float(xs.mean()), float(y), float(w)
+
+
 def track_camera(shots, source, det):
     """Рамка ведёт лицо плавно, как оператор (config "track": true, для концертов, где
     человек ходит по сцене). Масштаб внутри одной камеры постоянный, без зумов на склейках.
     Пока голова гуляет в мёртвой зоне - рамка стоит; вышла - рамка мягко догоняет.
     Склейка на той же камере (вырезана пауза) не прыгает: движение идёт сквозь стык."""
     det720 = cv2.FaceDetectorYN.create(str(TOOLS / "face_yunet.onnx"), "", (1280, 720), 0.6)
+    ratios = []   # высота лица / ширина светлой фигуры - для планов, где лица не видно
     samples = []  # по плану: [(сек от начала плана, x, y, высота лица)] в пикселях 1920x1080
     for sh in shots:
         if sh.get("cutaway") or sh.get("who") == "graphic":
@@ -531,14 +549,34 @@ def track_camera(shots, source, det):
                      else max(faces, key=lambda f: f[2] * f[3]))
                 pts.append((i / TRACK_FPS, float(f[0] + f[2] / 2) * 1.5,
                             float(f[1] + f[3] / 2) * 1.5, float(f[3]) * 1.5))
-        if pts:  # выбросы (зритель вместо говорящего): далеко от соседних точек.
-            # Сравниваем с медианой ближайших 0.5 сек, а не всего плана: на общем плане
-            # комик маленький и быстро ходит, его настоящие шаги не выбрасываем
-            mf = np.median([p[3] for p in pts])
-            near = lambda j, c: np.median([q[c] for q in pts[max(0, j - 2): j + 3]])
-            pts = [p for j, p in enumerate(pts)
-                   if abs(p[1] - near(j, 1)) < 2.5 * mf and abs(p[2] - near(j, 2)) < 1.5 * mf]
+                b = body(fr) if STAGE_TORSO > 0 else None
+                if b and abs(b[0] - pts[-1][1] / 1.5) < b[2]:
+                    ratios.append(f[3] / b[2])
+            elif STAGE_TORSO > 0:
+                # лица нет (согнулся, отвернулся) - ведём по светлой одежде, размер лица
+                # потом посчитаем по ширине фигуры
+                b = body(fr)
+                if b:
+                    pts.append((i / TRACK_FPS, b[0] * 1.5, b[1] * 1.5, -b[2] * 1.5))
         samples.append(pts)
+    # размер лица для точек по фигуре: из лиц этого плана, иначе соседних, иначе по ширине фигуры
+    real = [[p[3] for p in s if p[3] > 0] if s else [] for s in samples]
+    ratio = float(np.median(ratios)) if ratios else 0.4
+    for k, pts in enumerate(samples):
+        if not pts:
+            continue
+        near_fh = next((float(np.median(real[j])) for j in sorted(range(len(real)), key=lambda j: abs(j - k))
+                        if real[j]), None)
+        # голова согнувшегося - у верха фигуры: центр лица на полвысоты ниже верха
+        pts = [(t, x, y, fh) if fh > 0 else (t, x, y + (near_fh or -fh * ratio) / 2, near_fh or -fh * ratio)
+               for t, x, y, fh in pts]
+        # выбросы (зритель вместо говорящего): далеко от соседних точек.
+        # Сравниваем с медианой ближайших 0.5 сек, а не всего плана: на общем плане
+        # комик маленький и быстро ходит, его настоящие шаги не выбрасываем
+        mf = np.median([p[3] for p in pts])
+        near = lambda j, c: np.median([q[c] for q in pts[max(0, j - 2): j + 3]])
+        samples[k] = [p for j, p in enumerate(pts)
+                      if abs(p[1] - near(j, 1)) < 2.5 * mf and abs(p[2] - near(j, 2)) < 1.5 * mf]
 
     # прогоны одной камеры: новая камера внутри куска или на склейке другой масштаб/место
     runs, prev = [], None
