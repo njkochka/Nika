@@ -223,6 +223,56 @@ _По его структуре 0:39-0:50: один план в камере, ф
 | Часы на стене | генерация | ? |
 | Лицо: глаза открыты, глаза закрыты, распахнуты | рисует Вика | ? |
 
+#### Промпты для генерации сцены 7, 2026-10-23
+
+**Стражник бьёт по решётке** - загрузить `kadry/7-v-cepyah.webp` и написать:
+
+> Keep this exact image unchanged: same cell, bars, padlock, torch, wet floor, same bald chained woman inside, same camera angle and lighting. Add one 17th-century German town guard standing in the corridor on the right side, in front of the bars, seen from the side and slightly from behind: steel morion helmet, dark leather jerkin over a dirty linen shirt, wide trousers, boots. He holds a long pike with both hands and strikes the bars of the cell door with the wooden shaft, mid-swing, the bars vibrating. Realistic body, photorealistic, warm torchlight on his armor. Vertical 9:16.
+
+Лицо стражнику Вика рисует сама, как у всех героев.
+
+**Часы.** В 1600-х настенных часов в подвале не было, честнее песочные: стоят на
+каменном выступе у факела, песок пересыпается, на ударе их переворачивают. Если
+Ника за настенные - второй промпт.
+
+> A 17th-century hourglass with a dark wooden frame and turned wooden posts, glass bulbs with sand running from the top half to the bottom, slightly dusty and worn. Front view, centered, isolated on a plain white background, no shadow on the background, photorealistic, warm light from the left.
+
+> An old 17th-century round iron wall clock with a single hour hand and Roman numerals, rusty and dirty, front view, centered, isolated on a plain white background, photorealistic.
+
+### Сцена 8 (черновик, ждёт утверждения Ники), 2026-10-23
+
+Русский текст: «Но дальше было ещё хуже. Через трое суток без сна, если ты
+продолжала отрицать вину, тебя привязывали верёвками к доске, и палач начинал
+медленно натягивать канаты.»
+
+Предлагаемая фраза: **But it gets even worse. After three days without sleep, if you still denied everything, they would tie you to a board with ropes, and the executioner would slowly start pulling them tighter.**
+
+_Как у него на 0:17 «But it gets more brutal»: тот же план, рассказчик входит в
+кадр сбоку и смотрит в камеру. Дальше новый план - новое место, как у него
+каждая новая фраза._
+
+| Слова | Кадр | Слои |
+|---|---|---|
+| *But it gets even worse.* | План 7 в цепях без изменений. Lucy входит справа в коридор перед решёткой, поворачивается к камере, серьёзная, указка опущена | кадр 7, Lucy |
+| *After three days without sleep,* | Тот же план. Песочные часы на выступе переворачиваются три раза подряд, факел каждый раз догорает и меняется. Она обвисла на цепи, голова падает, глаза красные | кадр 7, часы, она обвисла |
+| *if you still denied everything,* | Крупно её лицо через прутья: мотает головой «нет», губы сжаты | она крупно, рот «нет» (рисует Вика) |
+| *they would tie you to a board with ropes,* | Новое место - пыточная под ратушей, вид сбоку. По центру наклонная деревянная доска с воротом у изголовья и у ног. Она лежит на доске в той же рваной рубахе, руки за головой, верёвки на запястьях и лодыжках. Lucy сбоку у стены | фон пыточная, она на доске, Lucy |
+| *and the executioner would slowly start pulling them tighter.* | Палач (тот же, что в сцене 6) у ворота, крутит рукоять. Верёвки натягиваются, доска скрипит, её лицо кривится. Камера медленно наезжает на лицо | фон пыточная, палач у ворота, она на доске, лицо от боли (Вика) |
+
+Ассеты сцены 8 (после утверждения фразы):
+
+| Что | Кто | Статус |
+|---|---|---|
+| Она обвисла на цепи (голова вниз, руки на цепи) в кадре 7 | генерация в кадре `7-v-cepyah` | ? |
+| Фон: пыточная в подвале ратуши сбоку, те же камни и своды, факелы, деревянная доска-дыба с двумя воротами | генерация | ? |
+| Она на доске в пыточной, руки за головой, верёвки, та же рубаха, лысая, точки от игл | генерация в фоне пыточной | ? |
+| Палач у ворота крутит рукоять (тот же палач из `kadry/6-palach-britva-igla.webp`) | генерация в фоне пыточной | ? |
+| Лицо: мотает головой, сжатые губы, гримаса боли | рисует Вика | ? |
+
+Промпт фона пыточной (после утверждения):
+
+> A dark 17th-century torture chamber in the stone cellar under a German town hall, side view. Same rough wet stone walls and low brick vault as a medieval dungeon, two iron torches on the wall giving warm flickering light, straw and puddles on the stone floor. In the center a heavy wooden rack: a long slanted plank on a wooden frame with a wooden windlass and crank handle at each end, thick ropes coiled on the rollers. Empty, no people. Photorealistic, cinematic, vertical 9:16.
+
 ## Раскадровка
 
 _устарела: сделана под версию 1 сценария. Черновик, по образцу Колизея: 28 сцен на 97 с, сцена 2-4 с_
