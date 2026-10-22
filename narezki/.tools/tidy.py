@@ -123,6 +123,11 @@ def voiced_gaps(words, src, a, b):
         g0, g1 = words[i]["e"], words[i + 1]["s"]
         if g1 - g0 < 0.35:
             continue
+        # Whisper ставит конец слова раньше, чем оно затихает: хвост «микрофлору?» принимался
+        # за оговорку и вырезался («микро»). Промежуток - только после того, как слово стихло
+        g0 = m.faded(src, words[i], g1) or min(g0 + 0.5, g1)
+        if g1 - g0 < 0.35:
+            continue
         lv = m.loudness(src, g0, g1)
         peak = max(max(v for _, v in m.loudness(src, words[i]["s"], words[i]["e"])), max(v for _, v in lv))
         if sum(v > peak - 15 for _, v in lv) / len(lv) > 0.2:
