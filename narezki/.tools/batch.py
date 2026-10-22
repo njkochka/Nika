@@ -74,7 +74,9 @@ def mix(i, s, title):
 
 def to_desktop(f, kind):
     """Копия готового ролика на рабочий стол Ники, файлом (не ярлыком): «Орлов - с баннером/01 - ....mp4»."""
-    d = Path.home() / "Desktop" / f"{spec.get('desktop', prefix)} - {kind}"
+    name = spec.get("desktop", prefix)
+    # без баннера на всю пачку папка одна - без приписки: «Выложить потом/01 - ....mp4»
+    d = Path.home() / "Desktop" / (name if not spec.get("banner", True) else f"{name} - {kind}")
     d.mkdir(parents=True, exist_ok=True)
     shutil.copy2(f, d / f.name)
     return f"на рабочий стол: {d.name}/{f.name}"
