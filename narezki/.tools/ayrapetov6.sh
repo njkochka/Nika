@@ -17,7 +17,7 @@ ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
 ln -sf "$N/ayrapetov-1/source.mp4" "$E/source.mp4"
 cd "$T"
-if [ "$1" = plan ]; then ./venv/bin/python batch.py "$E/batch6.json" --plan 2>&1 | tail -40; exit
-elif [ -n "$1" ]; then ./venv/bin/python batch.py "$E/batch6.json" --only="$1"
-else ./venv/bin/python batch.py "$E/batch6.json"; fi
+if [ "$1" = plan ]; then ./venv/bin/python batch.py "$E/batch6.json" --plan </dev/null 2>&1 | tail -40; exit
+elif [ -n "$1" ]; then ./venv/bin/python batch.py "$E/batch6.json" --only="$1" </dev/null
+else ./venv/bin/python batch.py "$E/batch6.json" </dev/null; fi
 open ~/Desktop/"Айрапетов - с баннером"
