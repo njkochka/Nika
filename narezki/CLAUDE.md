@@ -96,6 +96,11 @@
 из `.tools/` в git не уходят (см. `.gitignore`). В git хранятся скрипты из
 `.tools/`, конфиги роликов и расшифровки.
 
+**Каждый собранный ролик - с конфигом в git** (Ника, 23.10.2026): batch.json с `"n"` (номер темы),
+`"yt"` и `"desktop_dir"`, плюс `istorii.md` выпуска. Иначе облачный Claude не знает, откуда ролик,
+какой у него номер и в какую папку его класть (так вышло с Орловым «уролог» и «стриптизёры», собранными
+на Маке без конфига). Ролик, сделанный на Маке вручную, - сразу описать в batch.json выпуска.
+
 ## Правила
 
 [[narezki-kadr-na-govoryashchem]], [[narezki-muzyka-slyshno]], [[narezki-odna-tyazhelaya-zadacha]], [[narezki-odna-istoriya-bez-parazitov]], [[narezki-zvuk-originalnyy]], [[narezki-kadr-i-skleyki]], [[narezki-maty-zvezdochki]], [[narezki-nazvanie-dlya-youtube]], [[narezki-plavnoe-slezhenie]], [[narezki-subtitry-po-smyslu]], [[narezki-istoriya-s-syuzhetom]], [[narezki-nomer-v-nazvanii]], [[narezki-kopiya-na-rabochiy-stol]], [[narezki-slova-rezhushchie-ohvat]], [[narezki-kontekst-istorii]], [[narezki-chisla-ne-rezat]].
