@@ -1350,7 +1350,10 @@ def main():
     video = render_video(source, shots, tmp)
     audio = render_audio(source, pieces, tmp)
     chunks = subtitle_chunks(words, ranges, pieces, fixes, cfg.get("fix_words", {}))
-    burn_subtitles(video, audio, chunks, base / cfg["out"])
+    # сначала во временный файл: прерванная сборка не оставит обрубок под именем готового ролика
+    part = tmp / ("part" + Path(cfg["out"]).suffix)
+    burn_subtitles(video, audio, chunks, part)
+    part.replace(base / cfg["out"])
     print("готово:", base / cfg["out"])
 
 

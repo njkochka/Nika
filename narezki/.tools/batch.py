@@ -66,6 +66,14 @@ def numbered(title, n=None):
         nums.append(int(n))
     return f"{max(nums, default=0) + 1:02d} - {title}.mp4"
 
+def whole(f):
+    """Ролик целый: видео и звук одной длины (прерванная сборка оставляет видео короче звука)."""
+    if not f.exists(): return False
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=duration", "-of", "csv=p=0", str(f)],
+                       capture_output=True, text=True)
+    d = [float(x) for x in r.stdout.split() if x.replace(".", "", 1).isdigit()]
+    return len(d) == 2 and abs(d[0] - d[1]) < 0.2
+
 def mix(i, s, title):
     """Музыка и баннер поверх готового ролика (видео не пересобирается)."""
     rep = []
@@ -129,7 +137,7 @@ def one(i_s):
     cfg.update({k: v for k, v in p.items() if k != "guest"})
     cp = ep / f"{spec_path.stem}_{i:02d}.json"
     rep = [f"######## {title}"]
-    if MUSIC_ONLY and (RAW / f"{title}.mp4").exists():  # ролика без музыки ещё нет - собрать целиком
+    if MUSIC_ONLY and whole(RAW / f"{title}.mp4"):  # ролика без музыки нет или он обрублен - собрать целиком
         return "\n".join(rep + [mix(i, s, title)])
     json.dump(cfg, open(cp, "w"), ensure_ascii=False, indent=1)
     if spec.get("clean", True) and s.get("clean", True):  # паразиты, запинки, оговорки
