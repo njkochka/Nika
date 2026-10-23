@@ -145,7 +145,9 @@ def one(i_s):
     cp = ep / f"{spec_path.stem}_{i:02d}.json"
     rep = [f"######## {title}"]
     if MUSIC_ONLY and whole(RAW / f"{title}.mp4"):  # ролика без музыки нет или он обрублен - собрать целиком
-        return "\n".join(rep + [mix(i, s, title)])
+        r = mix(i, s, title)
+        if "!!! МУЗЫКА" not in r: return "\n".join(rep + [r])
+        rep.append("ролик без музыки битый (музыка не легла) - собираю заново")
     json.dump(cfg, open(cp, "w"), ensure_ascii=False, indent=1)
     if spec.get("clean", True) and s.get("clean", True):  # паразиты, запинки, оговорки
         code, out = sh([PY, "tidy.py", str(cp)]); rep.append(out)
