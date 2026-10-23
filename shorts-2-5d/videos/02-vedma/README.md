@@ -72,6 +72,8 @@ These are the terrifying steps you would face if you got accused of being a witc
 
 Во второй фразе «Then», не «And once you did» (решение Ники 2026-10-23).
 
+Сцена 10, черновик 2026-10-23, ждёт Нику: Dressed in a shirt of shame, you would be paraded on a cart through an angry mob that threw mud at you, yelling, "Burn the witch!"
+
 ## Раскадровка v2
 
 _под сценарий v2. Сцены 1-2 (хук, стража выносит на доске) сделаны Викой.

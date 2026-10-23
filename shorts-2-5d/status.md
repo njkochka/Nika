@@ -32,3 +32,4 @@
 - **2026-10-22** - сцена 7 собрана: Lucy слева, настенные часы над решёткой, стражник с пикой справа (`kadry/7-konec-sceny.webp`). Начало сцены 8 перестроено под этот кадр. Кадр «обвисла на цепи» готов.
 - **2026-10-22** - сцена 8: все генерации готовы. Палач и стражники на белом фоне - вставка в кадр отрезала ей голову; Вика вырезает их и ставит в `8-na-dybe`. Следующее: ТЗ Вике на сцену 8.
 - **2026-10-23** - фраза сцены 9 принята: «No one could take this kind of torture, so you would confess too. Then the judges would sentence you to be burned alive at the stake.» Связка «Then», варианта с «And once you did» нет (решение Ники).
+- **2026-10-23** - сцена 10 (телега): черновик «Dressed in a shirt of shame, you would be paraded on a cart through an angry mob that threw mud at you, yelling, "Burn the witch!"» Ждёт Нику.
