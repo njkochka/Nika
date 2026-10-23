@@ -26,6 +26,7 @@
 - **2026-10-20** - фраза сцены 7 поправлена: дверь у нас решётчатая, «железную» убрали. «…and the guards would bang on your cell door every half hour…»
 - **2026-10-20** - кадр 7 «в цепях» готов, `kadry/7-v-cepyah.webp`. Персонажей в готовом месте генерируем сразу в фоне. Голые плечи и руки можно (решение Ники).
 - **2026-10-23** - проект перенесён в репозиторий Nika (`shorts-2-5d/`). Сцена 7: промпты для стражника с пикой и часов (предложены песочные вместо настенных). Сцена 8: черновик английской фразы, раскадровка по словам и ассеты, ждут Нику.
+- **2026-10-23** - фраза сцены 9 принята: «No one could take this kind of torture, so you would confess too. Then the judges would sentence you to be burned alive at the stake.» «После признания» убрано: «confess» уже в предыдущей фразе.
 - **2026-10-22** - сцена 8: Ника дала русский текст, фраза переведена: «But it got even worse. After three days without sleep, if you still denied your guilt, they would tie you to a board with ropes, and the executioner would slowly start pulling them tighter.»
 - **2026-10-22** - фраза сцены 8 принята: «But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.» Правила перевода записаны в `perevod.md`.
 - **2026-10-22** - сцена 8: раскадровка по кадрам Колизея (вход рассказчика на «But it gets…», часы над героем, новое место - пыточная), ассеты и промпты в README.

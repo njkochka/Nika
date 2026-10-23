@@ -68,7 +68,9 @@ _версия 2, переписана Никой 2026-10-13, вычитана 20
 
 These are the terrifying steps you would face if you got accused of being a witch in the 1600s. First, the town guards would break down your door, put you on a board and carry you out. If you were a redhead, rich, or your neighbors just didn't like you, you could easily get accused of being a witch at any random moment. Next, they would drag you along the ground through crowded streets, as people all around threw rocks, manure and rotting vegetables at you. And eventually you would be dragged into the dungeon under the town hall, a stinking stone cellar where it was pitch black and freezing cold. In the morning, the executioner would come into your cell, strip you naked, shave your entire body and stick needles in every single mole. After that, you would be shackled to the wall with a short chain, and the guards would bang on your cell door every half hour, not letting you fall asleep.
 
-Дальше по сценарию, уже принято: No one could take this kind of torture, so you would confess too.
+Сцена 8 (принята 2026-10-22): But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.
+
+Сцена 9 (принята 2026-10-23): No one could take this kind of torture, so you would confess too. Then the judges would sentence you to be burned alive at the stake.
 
 ## Раскадровка v2
 
