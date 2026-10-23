@@ -70,6 +70,8 @@ These are the terrifying steps you would face if you got accused of being a witc
 
 Дальше по сценарию, уже принято: No one could take this kind of torture, so you would confess too.
 
+Сцена 10, черновик 2026-10-23, ждёт Нику: Then the judges would sentence you to be burned alive at the stake.
+
 ## Раскадровка v2
 
 _под сценарий v2. Сцены 1-2 (хук, стража выносит на доске) сделаны Викой.
