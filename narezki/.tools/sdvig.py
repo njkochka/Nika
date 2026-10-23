@@ -1,6 +1,6 @@
 """Замер: насколько таймкоды words.json разъехались со звуком source.mp4 по ходу выпуска.
 
-Запуск: venv/bin/python sdvig.py выпуск/ [шаг_сек=300]
+Запуск: venv/bin/python sdvig.py выпуск/ [шаг_сек=300] [с_сек] [по_сек]
 Каждые шаг секунд берёт 25 сек звука из source.mp4, заново расшифровывает и ищет
 те же слова в words.json. Печатает строку на точку: время в source и сдвиг
 (words.json минус source, сек). Сдвиг ноль везде - расшифровка совпадает с видео.
@@ -16,7 +16,7 @@ import mlx_whisper
 import numpy as np
 
 MODEL = "mlx-community/whisper-large-v3-turbo"
-WIN = 25.0
+WIN = float(__import__("os").environ.get("SDVIG_WIN", 25))
 
 ep = Path(sys.argv[1])
 step = float(sys.argv[2]) if len(sys.argv) > 2 else 300.0
@@ -29,8 +29,9 @@ dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=d
                            capture_output=True, text=True).stdout)
 print(f"source.mp4: {dur:.1f} сек, последнее слово words.json: {words[-1]['e']:.1f} сек")
 
-t = 30.0
-while t + WIN < dur:
+t = float(sys.argv[3]) if len(sys.argv) > 3 else 30.0
+stop = min(float(sys.argv[4]), dur - WIN) if len(sys.argv) > 4 else dur - WIN
+while t < stop:
     pcm = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-t", str(WIN), "-i", str(src),
                           "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
     audio = np.frombuffer(pcm, np.int16).astype(np.float32) / 32768

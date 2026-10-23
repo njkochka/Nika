@@ -6,7 +6,7 @@
 # 9 роликов для rezanina:     curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
 # 9 роликов для нового ТТ:    ... | bash -s novyy
 # Пересобрать ролики нового ТТ по порядку в batch_novyy.json (5 - стихи, 6 - прицеп, 7 - туфля): ... | bash -s novyy 5 6 7
-# Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig
+# Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig; кусок с шагом 15 сек: ... | bash -s sdvig 15 4830 5140
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
 # Обе половины по папкам «1 Berta - REZANINA» и «2 - ttpremium» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
@@ -32,7 +32,7 @@ if [ ! -f "$E/source.mp4" ]; then
   fi
 fi
 cd "$T"
-if [ "$1" = sdvig ]; then ./venv/bin/python sdvig.py "$E/" 300 </dev/null 2>&1 | grep -v -i warn; exit; fi
+if [ "$1" = sdvig ]; then shift; ./venv/bin/python sdvig.py "$E/" "${@:-300}" </dev/null 2>&1 | grep -v -i warn; exit; fi
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60 </dev/null
 if [ "$1" = papki ]; then ./venv/bin/python batch.py "$E/batch.json" --music </dev/null; ./venv/bin/python batch.py "$E/batch_novyy.json" --music </dev/null
   open ~/Desktop/"1 Berta - REZANINA"; open ~/Desktop/"2 - ttpremium"; exit
