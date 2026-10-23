@@ -7,6 +7,7 @@
 # 9 роликов для нового ТТ:    ... | bash -s novyy
 # Пересобрать ролики нового ТТ по порядку в batch_novyy.json (5 - стихи, 6 - прицеп, 7 - туфля): ... | bash -s novyy 5 6 7
 # Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig; кусок с шагом 15 сек: ... | bash -s sdvig 15 4830 5140
+# Починить расшифровку (сдвиг против видео) и пересобрать 33, 35, 37, 40: ... | bash -s ispravit
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
 # Обе половины по папкам «1 Berta - REZANINA» и «2 - ttpremium» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
@@ -21,7 +22,9 @@ if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https:
 fi
 for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py sdvig.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
 for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f" -o "$T/fonts/$f"; done
-for f in words.json batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
+for f in batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
+# words.json, поправленный sdvig.py --fix (есть sdvig.txt), не затирать версией с GitHub
+[ -f "$E/sdvig.txt" ] || curl -fsSL "$R/orlov-2/words.json" -o "$E/words.json"
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
 if [ ! -f "$E/source.mp4" ]; then
@@ -32,6 +35,11 @@ if [ ! -f "$E/source.mp4" ]; then
   fi
 fi
 cd "$T"
+if [ "$1" = ispravit ]; then  # починить расшифровку и пересобрать ролики, где она съехала
+  ./venv/bin/python sdvig.py "$E/" 300 --fix </dev/null 2>&1 | grep -v -i -e warn -e fetching | tee "$E/sdvig_log.txt"
+  ./venv/bin/python batch.py "$E/batch_novyy.json" --only=5 --only=6 --only=7 --only=8 </dev/null
+  echo; grep -e "скачок" -e "ИСПРАВЛЕНО" -e "СДВИГА НЕТ" -e "!!!" -e "ПРОВЕРИТЬ" "$E/sdvig_log.txt"; open ~/Desktop/"2 - ttpremium"; exit
+fi
 if [ "$1" = sdvig ]; then shift; ./venv/bin/python sdvig.py "$E/" "${@:-300}" </dev/null 2>&1 | grep -v -i warn; exit; fi
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60 </dev/null
 if [ "$1" = papki ]; then ./venv/bin/python batch.py "$E/batch.json" --music </dev/null; ./venv/bin/python batch.py "$E/batch_novyy.json" --music </dev/null

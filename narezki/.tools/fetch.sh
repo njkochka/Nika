@@ -7,6 +7,8 @@ T="$(cd "$(dirname "$0")" && pwd)"; url="$1"; dir="$2"; what="${3:-audio}"; mkdi
 if [[ $what == video ]]; then
   yt-dlp -q --no-warnings -N 8 -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080]" \
     --merge-output-format mp4 -o "$dir/source.%(ext)s" "$url"
+  # расшифровка сделана с отдельно скачанного звука - сверить с видео и поправить таймкоды
+  [ -f "$dir/words.json" ] && "$T/venv/bin/python" "$T/sdvig.py" "$dir/" 300 --fix 2>&1 | grep -v -i -e warn -e fetching | tail -4
 else
   yt-dlp -q --no-warnings -N 8 -f "ba[ext=m4a]/ba" -o "$dir/audio_src.%(ext)s" "$url"
   ffmpeg -v error -y -i "$dir"/audio_src.* -ac 1 -ar 16000 "$dir/audio.wav"

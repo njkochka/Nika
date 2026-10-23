@@ -42,6 +42,13 @@ prefix = spec.get("prefix", "Самойлова")
 HOST = spec.get("host", HOST)
 PEOPLE = {"oksana": OKSANA, "mom": {**MOM, "guest_hair": "light", "host_side": "right"}, **spec.get("people", {})}
 log = open(ep / f"{spec_path.stem}_log.txt", "w")
+if (ep / "source.mp4").exists():  # расшифровка со звука, скачанного отдельно, бывает длиннее видео - субтитры не те
+    _w = json.load(open(ep / "words.json")); _w = _w if isinstance(_w, list) else _w["words"]
+    _d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                               str(ep / "source.mp4")], capture_output=True, text=True).stdout)
+    if _w[-1]["s"] > _d:
+        sys.exit(f"!!! words.json длиннее видео ({_w[-1]['s']:.0f} > {_d:.0f} сек): расшифровка съехала. "
+                 f"Сначала: venv/bin/python sdvig.py {ep}/ 300 --fix")
 
 def sh(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=T)
