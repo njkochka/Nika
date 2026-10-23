@@ -3,6 +3,7 @@
 # где папка нарезок не связана с GitHub. Ничего локального не меняет: скрипты с GitHub
 # кладутся отдельно в .tools_neo/ и orlov-1-neo/, исходник, venv и модели лиц берутся по ссылке.
 # Запуск: curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/neo_vylozhit.sh | bash
+# Только баннер на уже собранные, без пересборки: ... | bash -s -- --music
 # Только нужные ролики (номер по порядку в batch_vylozhit.json, с 0): ... | bash -s -- --only=5 --only=6
 set -e
 N=~/Desktop/brain/projects/narezki
