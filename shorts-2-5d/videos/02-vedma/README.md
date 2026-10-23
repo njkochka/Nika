@@ -70,6 +70,12 @@ These are the terrifying steps you would face if you got accused of being a witc
 
 Дальше по сценарию, уже принято: No one could take this kind of torture, so you would confess too.
 
+### Сцена 10 (приговор), перевод 2026-10-23
+
+Русский текст: «После признания судьи выносили приговор - сожжение на костре заживо.»
+
+Черновик, ждёт Нику: **Once you confessed, the judges would sentence you to be burned alive at the stake.** (~4 с)
+
 ## Раскадровка v2
 
 _под сценарий v2. Сцены 1-2 (хук, стража выносит на доске) сделаны Викой.
