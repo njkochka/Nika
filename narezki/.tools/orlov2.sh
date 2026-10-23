@@ -9,6 +9,8 @@
 # Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig; кусок с шагом 15 сек: ... | bash -s sdvig 15 4830 5140
 # Починить расшифровку (сдвиг против видео) и пересобрать 33, 35, 37, 40: ... | bash -s ispravit (только стихи: ... | bash -s ispravit 5)
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
+# На ночь (всё сразу, Мак не засыпает): сверка расшифровки, пересборка 33, 35, 37, 40, недостающие и обрубленные
+#   ролики обеих половин собираются, остальным - музыка и баннер заново; итог в orlov-2-gh/noch_log.txt: ... | bash -s noch
 # Обе половины по папкам «1 Berta - REZANINA» и «2 - ttpremium» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
 N=~/Desktop/brain/projects/narezki
@@ -39,6 +41,24 @@ if [ "$1" = ispravit ]; then  # починить расшифровку и пе�
   ./venv/bin/python sdvig.py "$E/" 300 --fix </dev/null 2>&1 | grep -v -i -e warn -e fetching | tee "$E/sdvig_log.txt"
   ./venv/bin/python batch.py "$E/batch_novyy.json" $(for i in ${2:-5 6 7 8}; do echo --only=$i; done) </dev/null
   echo; grep -e "скачок" -e "ИСПРАВЛЕНО" -e "СДВИГА НЕТ" -e "!!!" -e "ПРОВЕРИТЬ" "$E/sdvig_log.txt"; open ~/Desktop/"2 - ttpremium"; exit
+fi
+if [ "$1" = noch ]; then  # на ночь: caffeinate не даёт Маку уснуть, пока идёт сборка
+  L="$E/noch_log.txt"; : > "$L"
+  caffeinate -dimsu -w $$ & 
+  echo "== сверка расшифровки с видео" | tee -a "$L"
+  ./venv/bin/python sdvig.py "$E/" 300 --fix </dev/null 2>&1 | grep -v -i -e warn -e fetching | tee -a "$L" || true
+  if grep -q '^!!!' "$L"; then
+    echo "!!! расшифровку не починить само - 33, 35, 37, 40 НЕ пересобраны (иначе опять рассинхрон)" | tee -a "$L"
+  else
+    echo "== пересборка 33, 35, 37, 40" | tee -a "$L"
+    ./venv/bin/python batch.py "$E/batch_novyy.json" --only=5 --only=6 --only=7 --only=8 </dev/null 2>&1 | tee -a "$L" || true
+  fi
+  echo "== остальные ролики обеих половин" | tee -a "$L"
+  ./venv/bin/python batch.py "$E/batch.json" --music </dev/null 2>&1 | tee -a "$L" || true
+  ./venv/bin/python batch.py "$E/batch_novyy.json" --music </dev/null 2>&1 | tee -a "$L" || true
+  echo; echo "======== ИТОГ"; grep -e "скачок" -e "ИСПРАВЛЕНО" -e "СДВИГА НЕТ" -e "!!!" -e "ПРОВЕРИТЬ" -e "ВСЁ ГОТОВО" "$L" || true
+  echo "в «1 Berta - REZANINA»: $(ls ~/Desktop/"1 Berta - REZANINA" 2>/dev/null | grep -c mp4) роликов, в «2 - ttpremium»: $(ls ~/Desktop/"2 - ttpremium" 2>/dev/null | grep -c mp4) (должно быть по 9)"
+  open ~/Desktop/"1 Berta - REZANINA"; open ~/Desktop/"2 - ttpremium"; exit
 fi
 if [ "$1" = sdvig ]; then shift; ./venv/bin/python sdvig.py "$E/" "${@:-300}" </dev/null 2>&1 | grep -v -i warn; exit; fi
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60 </dev/null
