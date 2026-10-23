@@ -11,6 +11,8 @@
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
 # На ночь (всё сразу, Мак не засыпает): сверка расшифровки, пересборка 33, 35, 37, 40, недостающие и обрубленные
 #   ролики обеих половин собираются, остальным - музыка и баннер заново; итог в orlov-2-gh/noch_log.txt: ... | bash -s noch
+# Новые ролики на ночь (темы без ⭐: 8 для REZANINA, 10 для ttpremium), Мак не засыпает: ... | bash -s novye
+#   (только REZANINA: ... | bash -s novye r; только ttpremium: ... | bash -s novye p)
 # Обе половины по папкам «1 Berta - REZANINA» и «2 - ttpremium» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
 N=~/Desktop/brain/projects/narezki
@@ -25,7 +27,7 @@ if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https:
 fi
 for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py sdvig.py; do curl -fsSL "$R/.tools/$f$Q" -o "$T/$f"; done
 for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f$Q" -o "$T/fonts/$f"; done
-for f in batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f$Q" -o "$E/$f"; done
+for f in batch.json batch_novyy.json batch_proba.json batch_rezanina2.json batch_premium2.json; do curl -fsSL "$R/orlov-2/$f$Q" -o "$E/$f"; done
 curl -fsSL "$R/orlov-2/words.json$Q" -o "$E/words.json"  # в git уже сверен с видео (sdvig.py, 23.10.2026)
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
@@ -41,6 +43,15 @@ if [ "$1" = ispravit ]; then  # починить расшифровку и пе�
   ./venv/bin/python sdvig.py "$E/" 300 --fix </dev/null 2>&1 | grep -v -i -e warn -e fetching | tee "$E/sdvig_log.txt"
   ./venv/bin/python batch.py "$E/batch_novyy.json" $(for i in ${2:-5 6 7 8}; do echo --only=$i; done) </dev/null
   echo; grep -e "скачок" -e "ИСПРАВЛЕНО" -e "СДВИГА НЕТ" -e "!!!" -e "ПРОВЕРИТЬ" "$E/sdvig_log.txt"; open ~/Desktop/"2 - ttpremium"; exit
+fi
+if [ "$1" = novye ]; then  # новые ролики на ночь: caffeinate не даёт Маку уснуть
+  caffeinate -dimsu -w $$ &
+  L="$E/novye_log.txt"; : > "$L"
+  [ "$2" != p ] && { ./venv/bin/python batch.py "$E/batch_rezanina2.json" </dev/null 2>&1 | tee -a "$L" || true; }
+  [ "$2" != r ] && { ./venv/bin/python batch.py "$E/batch_premium2.json" </dev/null 2>&1 | tee -a "$L" || true; }
+  echo; echo "======== ИТОГ"; grep -e "^!!!" -e "ВСЁ ГОТОВО" "$L" || true
+  for d in "1 Berta - REZANINA новые" "2 - ttpremium новые"; do echo "в «$d»: $(ls ~/Desktop/"$d" 2>/dev/null | grep -c mp4) роликов"; open ~/Desktop/"$d" 2>/dev/null || true; done
+  exit
 fi
 if [ "$1" = noch ]; then  # на ночь: caffeinate не даёт Маку уснуть, пока идёт сборка
   L="$E/noch_log.txt"; : > "$L"
