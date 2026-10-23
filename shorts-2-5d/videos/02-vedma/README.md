@@ -72,6 +72,8 @@ These are the terrifying steps you would face if you got accused of being a witc
 
 Сцена 10, черновик 2026-10-23, ждёт Нику: Then the judges would sentence you to be burned alive at the stake.
 
+Сцена 11, черновик 2026-10-23, ждёт Нику: They would then put you in a shirt of shame and haul you on a cart through a raging crowd that threw mud at you, screaming: (толпа голосами) «Burn the witch!»
+
 ## Раскадровка v2
 
 _под сценарий v2. Сцены 1-2 (хук, стража выносит на доске) сделаны Викой.
