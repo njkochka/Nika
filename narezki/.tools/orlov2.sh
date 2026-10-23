@@ -8,7 +8,7 @@
 # Пересобрать ролики нового ТТ по порядку в batch_novyy.json (5 - стихи, 6 - прицеп, 7 - туфля): ... | bash -s novyy 5 6 7
 # Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
-# Обе половины по папкам «резанина» и «ТТ премиум» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
+# Обе половины по папкам «1 Berta - REZANINA» и «2 - ttpremium» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
 N=~/Desktop/brain/projects/narezki
 R=https://raw.githubusercontent.com/njkochka/Nika/main/narezki
@@ -35,10 +35,10 @@ cd "$T"
 if [ "$1" = sdvig ]; then ./venv/bin/python sdvig.py "$E/" 300 </dev/null 2>&1 | grep -v -i warn; exit; fi
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60 </dev/null
 if [ "$1" = papki ]; then ./venv/bin/python batch.py "$E/batch.json" --music </dev/null; ./venv/bin/python batch.py "$E/batch_novyy.json" --music </dev/null
-  open ~/Desktop/"резанина"; open ~/Desktop/"ТТ премиум"; exit
-elif [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json" </dev/null; open ~/Desktop/"резанина"
-elif [ "$1" = novyy ]; then shift; ./venv/bin/python batch.py "$E/batch_novyy.json" "${@/#/--only=}" </dev/null; open ~/Desktop/"ТТ премиум"
-elif [ "$1" = one ]; then ./venv/bin/python batch.py "$E/batch.json" --only="$2" </dev/null; open ~/Desktop/"резанина"
-elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4 </dev/null; open ~/Desktop/"резанина"
+  open ~/Desktop/"1 Berta - REZANINA"; open ~/Desktop/"2 - ttpremium"; exit
+elif [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json" </dev/null; open ~/Desktop/"1 Berta - REZANINA"
+elif [ "$1" = novyy ]; then shift; ./venv/bin/python batch.py "$E/batch_novyy.json" "${@/#/--only=}" </dev/null; open ~/Desktop/"2 - ttpremium"
+elif [ "$1" = one ]; then ./venv/bin/python batch.py "$E/batch.json" --only="$2" </dev/null; open ~/Desktop/"1 Berta - REZANINA"
+elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4 </dev/null; open ~/Desktop/"1 Berta - REZANINA"
 else ./venv/bin/python batch.py "$E/batch_proba.json" </dev/null; open ~/Desktop/"Орлов проба - с баннером"; fi
 open "$E/frames/sheet.jpg"
