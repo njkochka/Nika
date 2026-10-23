@@ -14,17 +14,18 @@ set -e
 N=~/Desktop/brain/projects/narezki
 R=https://raw.githubusercontent.com/njkochka/Nika/main/narezki
 T=$N/.tools_o2; E=$N/orlov-2-gh
+Q="?t=$(date +%s)"  # GitHub отдаёт старые файлы ещё минут 5 после правки - метка времени берёт свежие
 mkdir -p "$T/fonts" "$E"
 # убрать связь с GitHub, которую добавили в общую папку brain 22.10 (она там не нужна)
 G=$(git -C "$N" rev-parse --show-toplevel 2>/dev/null || true)
 if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https://github.com/njkochka/Nika.git" ]; then
   git -C "$G" branch --unset-upstream 2>/dev/null || true; git -C "$G" remote remove origin
 fi
-for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py sdvig.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
-for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f" -o "$T/fonts/$f"; done
-for f in batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
+for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py sdvig.py; do curl -fsSL "$R/.tools/$f$Q" -o "$T/$f"; done
+for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f$Q" -o "$T/fonts/$f"; done
+for f in batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f$Q" -o "$E/$f"; done
 # words.json, поправленный sdvig.py --fix (есть sdvig.txt), не затирать версией с GitHub
-[ -f "$E/sdvig.txt" ] || curl -fsSL "$R/orlov-2/words.json" -o "$E/words.json"
+[ -f "$E/sdvig.txt" ] || curl -fsSL "$R/orlov-2/words.json$Q" -o "$E/words.json"
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
 if [ ! -f "$E/source.mp4" ]; then
@@ -48,5 +49,6 @@ elif [ "$1" = all ]; then ./venv/bin/python batch.py "$E/batch.json" </dev/null;
 elif [ "$1" = novyy ]; then shift; ./venv/bin/python batch.py "$E/batch_novyy.json" "${@/#/--only=}" </dev/null; open ~/Desktop/"2 - ttpremium"
 elif [ "$1" = one ]; then ./venv/bin/python batch.py "$E/batch.json" --only="$2" </dev/null; open ~/Desktop/"1 Berta - REZANINA"
 elif [ "$1" = 5 ]; then ./venv/bin/python batch.py "$E/batch.json" --only=0 --only=1 --only=2 --only=3 --only=4 </dev/null; open ~/Desktop/"1 Berta - REZANINA"
+elif [ -n "$1" ]; then echo "!!! не знаю команду «$1» - скрипт мог прийти старый, повторите через пару минут"; exit 1
 else ./venv/bin/python batch.py "$E/batch_proba.json" </dev/null; open ~/Desktop/"Орлов проба - с баннером"; fi
 open "$E/frames/sheet.jpg"
