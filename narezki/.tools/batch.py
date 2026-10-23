@@ -19,7 +19,8 @@ batch.json: {"shorts": [{"name", "ranges": [[a, b, "h"|"g"]], "who"?, "fix_words
   who - ключ из people (кто гость в этом ролике); mom: true - старый ключ для пачки 2.
 Итог: готовые/<out>/ - ролики с музыкой с номером («12 - название.mp4»), без подпапок; без музыки - выпуск/без музыки/. Лог - выпуск/<batch>_log.txt.
 """
-import json, shutil, subprocess, sys
+import json
+import os, shutil, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -104,7 +105,10 @@ def to_desktop(f, kind):
     d = Path.home() / "Desktop" / (name if not spec.get("banner", True) else f"{name} - {kind}")
     if spec.get("desktop_dir"): d = Path.home() / "Desktop" / spec["desktop_dir"]
     d.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(f, d / f.name)
+    dst = d / f.name  # тот же файл на диске, что в готовые/ (жёсткая ссылка): в Finder обычный файл, места не занимает
+    dst.unlink(missing_ok=True)
+    try: os.link(f, dst)
+    except OSError: shutil.copy2(f, dst)
     return f"на рабочий стол: {d.name}/{f.name}"
 
 

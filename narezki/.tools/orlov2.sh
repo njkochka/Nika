@@ -50,6 +50,11 @@ if [ "$1" = novye ]; then  # новые ролики на ночь: caffeinate �
   echo "свободно до чистки: $(df -g "$N" | awk 'NR==2{print $4}') ГБ"
   # мусор нарезок: рабочие кадры прерванных сборок; плюс кэши Homebrew и pip
   find "$N" -maxdepth 3 -type d -name "*_tmp" -prune -exec rm -rf {} + 2>/dev/null || true
+  # копии роликов на рабочем столе - тот же файл, что в готовые/ (жёсткая ссылка): ничего не удаляется, место занято один раз
+  find ~/Desktop -mindepth 2 -maxdepth 2 -type f -name "*.mp4" -links 1 2>/dev/null | while IFS= read -r f; do
+    g=$(find "$N/готовые" -type f -name "$(basename "$f")" -size "$(stat -f %z "$f")c" 2>/dev/null | head -1)
+    [ -n "$g" ] && cmp -s "$f" "$g" && ln -f "$g" "$f" && echo "одним файлом: $(basename "$f")"
+  done | wc -l | xargs echo "роликов на столе теперь одним файлом с готовые/:"
   command -v brew >/dev/null && brew cleanup -s >/dev/null 2>&1 || true
   ./venv/bin/pip cache purge >/dev/null 2>&1 || true
   FREE=$(df -g "$N" | awk 'NR==2{print $4}')
