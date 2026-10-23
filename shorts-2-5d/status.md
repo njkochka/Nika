@@ -34,3 +34,4 @@
 - **2026-10-23** - фраза сцены 9 принята: «No one could take this kind of torture, so you would confess too. Then the judges would sentence you to be burned alive at the stake.» Связка «Then», варианта с «And once you did» нет (решение Ники).
 - **2026-10-23** - сцена 10 (телега): черновик «Dressed in a shirt of shame, you would be paraded on a cart through an angry mob that threw mud at you, yelling, "Burn the witch!"» Ждёт Нику.
 - **2026-10-23** - фраза сцены 10 принята. Раскадровка сцены 10: телега выезжает из арки ратуши (фон 5а), едет по улице 4а обратно, сбоку на улице 4б горожане кидают грязь в белую рубаху и орут. Фоны готовые, генерировать: телега спереди и сбоку, двое горожан. Ждёт Нику.
+- **2026-10-23** - сцена 10: фон «улица от ратуши, в конце площадь со столбом» готов, `kadry/10-fon-ulica-ot-ratushi.jpg`.
