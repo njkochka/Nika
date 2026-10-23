@@ -119,6 +119,11 @@ bak = ep / "words_do_sdviga.json"
 if not bak.exists():
     shutil.copy2(ep / "words.json", bak)
 for k, d in fixes:
+    cut = words[k]["s"] + d  # где скачок на шкале видео
+    if d < 0:  # лишние секунды в звуке расшифровки - это вырезанная из видео речь (Орлов 2: «Израиль с
+        for w in words[:k]:  # Палестиной»): её слов в видео нет, они сжимаются в точку скачка, номера те же
+            if w["e"] > cut:
+                w["s"], w["e"] = round(min(w["s"], cut), 2), round(cut, 2)
     for w in words[k:]:
         w["s"], w["e"] = round(w["s"] + d, 2), round(w["e"] + d, 2)
 (ep / "words.json").write_text(json.dumps(words, ensure_ascii=False))
