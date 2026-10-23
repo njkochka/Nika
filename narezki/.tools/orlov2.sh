@@ -47,7 +47,11 @@ fi
 if [ "$1" = novye ]; then  # новые ролики на ночь: caffeinate не даёт Маку уснуть
   caffeinate -dimsu -w $$ &
   L="$E/novye_log.txt"; : > "$L"
-  find "$N" -maxdepth 3 -type d -name "*_tmp" -prune -exec rm -rf {} + 2>/dev/null || true  # рабочие кадры прерванных сборок
+  echo "свободно до чистки: $(df -g "$N" | awk 'NR==2{print $4}') ГБ"
+  # мусор нарезок: рабочие кадры прерванных сборок; плюс кэши Homebrew и pip
+  find "$N" -maxdepth 3 -type d -name "*_tmp" -prune -exec rm -rf {} + 2>/dev/null || true
+  command -v brew >/dev/null && brew cleanup -s >/dev/null 2>&1 || true
+  ./venv/bin/pip cache purge >/dev/null 2>&1 || true
   FREE=$(df -g "$N" | awk 'NR==2{print $4}')
   echo "свободно на диске: $FREE ГБ"
   if [ "$FREE" -lt 3 ]; then
