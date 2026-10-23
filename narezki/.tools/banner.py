@@ -5,7 +5,8 @@
 Повторяет бота один в один (правила из бота и замеры его роликов в ТикТоке
 polkovnikrostik, 21.10.2026):
 - ролик до 60 сек включительно - один баннер ровно в середине; 60-80 сек - один на 0:20;
-  длиннее 80 сек - 0:20, 1:20, 2:20... по длине исходника;
+  длиннее 80 сек - 0:20, 1:20, 2:20... по длине исходника, время - по готовому ролику
+  (с учётом пауз на предыдущие баннеры; Ника, 23.10.2026);
 - в момент баннера ролик стоит на паузе (стоп-кадр), звук ролика и музыки молчит,
   играет озвучка баннера с его родной громкостью, как у бота, потом ролик идёт
   с того же места;
@@ -33,10 +34,12 @@ def probe(path):
     return json.loads(out)
 
 
-def points(length):
+def points(length, b_len):
+    """Где ставить баннеры, в секундах исходника. 0:20, 1:20, 2:20 - по готовому ролику:
+    каждый баннер до этого - пауза b_len, поэтому в исходнике следующий раньше на b_len."""
     if length <= 60:
         return [length / 2]
-    return [20 + 60 * k for k in range(int(length // 60) + 1) if 20 + 60 * k < length]
+    return [20 + 60 * k - k * b_len for k in range(int(length // 60) + 1) if 20 + 60 * k < length]
 
 
 def mask(path):
@@ -54,8 +57,8 @@ def main():
     length = float(info["format"]["duration"])
     num, den = next(s["r_frame_rate"] for s in info["streams"] if s["codec_type"] == "video").split("/")
     fps = int(num) / int(den)
-    t = [round(p * fps) / fps for p in points(length)]
     b_len = float(probe(BANNER)["format"]["duration"]) / SPEED
+    t = [round(p * fps) / fps for p in points(length, b_len)]
 
     bounds = [0.0] + t + [length]
     n = len(bounds) - 1
@@ -89,7 +92,8 @@ def main():
                     "-c:a", "aac", "-b:a", "256k", "-ar", "48000", "-movflags", "+faststart",
                     str(dst)], check=True)
     m.unlink()
-    print("Баннер FloatUp:", ", ".join(f"{int(x // 60)}:{x % 60:05.2f}" for x in t))
+    shown = [x + i * b_len for i, x in enumerate(t)]  # время в готовом ролике
+    print("Баннер FloatUp:", ", ".join(f"{int(x // 60)}:{x % 60:05.2f}" for x in shown))
 
 
 if __name__ == "__main__":
