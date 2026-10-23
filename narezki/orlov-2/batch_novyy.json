@@ -406,7 +406,10 @@
     "silence_min": 0.15,
     "min_piece": 0.5,
     "track": true,
-    "stage_torso": 0
+    "stage_torso": 0,
+    "no_cut": [
+     10840
+    ]
    },
    "ranges": [
     [
@@ -416,11 +419,6 @@
     ],
     [
      10803,
-     10834,
-     "g"
-    ],
-    [
-     10844,
      10863,
      "g"
     ],
