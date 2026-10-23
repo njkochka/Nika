@@ -3,6 +3,7 @@
 # где папка нарезок не связана с GitHub. Ничего локального не меняет: скрипты с GitHub
 # кладутся отдельно в .tools_neo/ и orlov-1-neo/, исходник, venv и модели лиц берутся по ссылке.
 # Запуск: curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/neo_vylozhit.sh | bash
+# Только нужные ролики (номер по порядку в batch_vylozhit.json, с 0): ... | bash -s -- --only=5 --only=6
 set -e
 N=~/Desktop/brain/projects/narezki
 R=https://raw.githubusercontent.com/njkochka/Nika/main/narezki
@@ -16,5 +17,5 @@ curl -fsSL "$R/orlov-1/batch_vylozhit.json" -o "$E/batch_vylozhit.json"
 ln -sfn "$N/.tools/venv" "$T/venv"
 ln -sf "$N"/.tools/*.onnx "$T/"
 ln -sf "$N/orlov-1/source.mp4" "$E/source.mp4"
-cd "$T" && ./venv/bin/python batch.py "$E/batch_vylozhit.json"
+cd "$T" && ./venv/bin/python batch.py "$E/batch_vylozhit.json" "$@" </dev/null
 open ~/Desktop/"Выложить потом"
