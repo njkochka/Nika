@@ -47,10 +47,17 @@ fi
 if [ "$1" = novye ]; then  # новые ролики на ночь: caffeinate не даёт Маку уснуть
   caffeinate -dimsu -w $$ &
   L="$E/novye_log.txt"; : > "$L"
+  find "$N" -maxdepth 3 -type d -name "*_tmp" -prune -exec rm -rf {} + 2>/dev/null || true  # рабочие кадры прерванных сборок
+  FREE=$(df -g "$N" | awk 'NR==2{print $4}')
+  echo "свободно на диске: $FREE ГБ"
+  if [ "$FREE" -lt 3 ]; then
+    echo "!!! мало места (нужно хотя бы 3 ГБ). Что больше всего занимает:"
+    du -sh "$N"/* "$N"/.tools* ~/Desktop/* ~/Downloads ~/.Trash 2>/dev/null | sort -h | tail -12; exit 1
+  fi
   [ "$2" != p ] && { ./venv/bin/python batch.py "$E/batch_rezanina2.json" </dev/null 2>&1 | tee -a "$L" || true; }
   [ "$2" != r ] && { ./venv/bin/python batch.py "$E/batch_premium2.json" </dev/null 2>&1 | tee -a "$L" || true; }
   echo; echo "======== ИТОГ"; grep -e "^!!!" -e "ВСЁ ГОТОВО" "$L" || true
-  for d in "1 Berta - REZANINA новые" "2 - ttpremium новые"; do echo "в «$d»: $(ls ~/Desktop/"$d" 2>/dev/null | grep -c mp4) роликов"; open ~/Desktop/"$d" 2>/dev/null || true; done
+  for d in "1 Berta - REZANINA новые" "2 - ttpremium новые"; do echo "в «${d}»: $(ls ~/Desktop/"$d" 2>/dev/null | grep -c mp4) роликов"; open ~/Desktop/"$d" 2>/dev/null || true; done
   exit
 fi
 if [ "$1" = noch ]; then  # на ночь: caffeinate не даёт Маку уснуть, пока идёт сборка
