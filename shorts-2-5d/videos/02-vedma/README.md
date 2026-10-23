@@ -310,7 +310,7 @@ _По его кадрам Колизея (`ref-kolizey/kolizey-12.png`, `kolizey
 
 Русский текст (Ника 2026-10-23, две фразы - одна сцена, чтобы проще делать): «Никто не выдерживал таких мучений, и ты тоже признавала вину. После признания судьи выносили приговор - сожжение на костре заживо.»
 
-Фраза (черновик, ждёт Нику): **No one could take this kind of torture, so you would confess too. And once you did, the judges would sentence you to be burned alive at the stake.** (~8 с)
+Фраза (принята 2026-10-23): **No one could take this kind of torture, so you would confess too. And once you did, the judges would sentence you to be burned alive at the stake.** (~8 с)
 
 _Всё генерирует Ника. Одно место - зал суда в ратуше (признание под пыткой повторяли перед судьями уже без пытки). Один план на всю сцену, как у Hoodie Guy: фон стоит, меняется поза героев. Крупных планов предметов нет (решение Ники 2026-10-23). Столб и площадь не показываем: они будут в следующей сцене._
 
@@ -396,3 +396,18 @@ _устарела: сделана под версию 1 сценария. Чер
 ### ТЗ Вике на сцену 8, 2026-10-22
 
 Отдано Нике для пересылки, текст как в чате 2026-10-22. Озвучка ~10 с: «But it gets even worse. After three days without sleep, if you still refused to confess, they would tie you to a board, and the executioner would slowly start turning the crank to stretch your body.» Шесть планов: 1-3 в камере (конец сцены 7, обвисла, «нет» головой), 4-6 в пыточной (стражники вяжут, палач крутит ворот, растяжение и затемнение). Подробности - в таблице раскадровки выше.
+
+### ТЗ Вике на сцену 9, 2026-10-23
+
+Озвучка ~8 с: «No one could take this kind of torture, so you would confess too. And once you did, the judges would sentence you to be burned alive at the stake.» Один план на всю сцену - зал суда, фон стоит, меняются позы.
+
+| Слова | Что в кадре | Файлы |
+|---|---|---|
+| *No one could take this kind of torture,* (~2,5 с) | Из затемнения сцены 8 открываемся на зал суда. Она на коленях на пустом полу справа, лицом к судьям. Lucy сбоку на переднем плане, серьёзная. Камера медленно наезжает | фон `9-fon-zal-suda.jpg`, она `9-na-kolenyah-belyy-fon.jpg`, Lucy |
+| *so you would confess too.* (~1,5 с) | Тот же план, склейка на позу: она склонилась, голова опущена, руки у груди, слеза. Наезд продолжается | фон `9-fon-zal-suda.jpg`, она `9-sklonilas-belyy-fon.jpg`, Lucy |
+| *And once you did, the judges would sentence you to be burned alive at the stake.* (~4 с) | На слове *sentence* смена фона: судья стоит с листом приговора и указывает на неё. Она остаётся склонённой. Наезд на неё до конца фразы | фон `9-sudya-vstal.jpg`, она `9-sklonilas-belyy-fon.jpg`, Lucy |
+
+Важно:
+- Её поставить на одно и то же место пола в обоих фонах: кадр `9-sudya-vstal` чуть сдвинут относительно `9-fon-zal-suda`. Место - по линии пальца судьи.
+- Тень от неё на пол, свет тёплый от свечей слева.
+- Обе её позы на белом фоне - вырезать.
