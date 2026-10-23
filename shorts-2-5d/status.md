@@ -31,5 +31,5 @@
 - **2026-10-22** - сцена 8: раскадровка по кадрам Колизея (вход рассказчика на «But it gets…», часы над героем, новое место - пыточная), ассеты и промпты в README.
 - **2026-10-22** - сцена 7 собрана: Lucy слева, настенные часы над решёткой, стражник с пикой справа (`kadry/7-konec-sceny.webp`). Начало сцены 8 перестроено под этот кадр. Кадр «обвисла на цепи» готов.
 - **2026-10-22** - сцена 8: все генерации готовы. Палач и стражники на белом фоне - вставка в кадр отрезала ей голову; Вика вырезает их и ставит в `8-na-dybe`. Следующее: ТЗ Вике на сцену 8.
-- **2026-10-23** - сцена 10 (приговор): черновик фразы «Then the judges would sentence you to be burned alive at the stake.», ждёт Нику.
-- **2026-10-23** - сцена 11 (телега): черновик «They would then put you in a shirt of shame and haul you on a cart through a raging crowd that threw mud at you, screaming:», «Burn the witch!» озвучивает толпа. Ждёт Нику.
+- **2026-10-23** - сцена 9 принята (признание и приговор одной сценой): «No one could take this kind of torture, so you would confess too. And once you did, the judges would sentence you to be burned alive at the stake.»
+- **2026-10-23** - сцена 10 (телега): черновик «They would then put you in a shirt of shame and haul you on a cart through a raging crowd that threw mud at you, screaming:», «Burn the witch!» озвучивает толпа. Ждёт Нику.
