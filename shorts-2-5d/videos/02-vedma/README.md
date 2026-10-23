@@ -70,11 +70,17 @@ These are the terrifying steps you would face if you got accused of being a witc
 
 Дальше по сценарию, уже принято: No one could take this kind of torture, so you would confess too.
 
-### Сцена 10 (приговор), перевод 2026-10-23
+### Сцена 9 (приговор), перевод 2026-10-23
 
 Русский текст: «После признания судьи выносили приговор - сожжение на костре заживо.»
 
 Черновик, ждёт Нику: **Once you confessed, the judges would sentence you to be burned alive at the stake.** (~4 с)
+
+### Сцена 10 (телега), перевод 2026-10-23
+
+Русский текст: «Тебя в позорной рубахе везли на телеге через беснующуюся толпу, которая закидывала тебя грязью и кричала: „Сжечь ведьму!“»
+
+Черновик, ждёт Нику: **Then they would dress you in a shame shirt and haul you on a cart through a raging crowd that threw mud at you, screaming, "Burn the witch!"** (~6 с)
 
 ## Раскадровка v2
 
