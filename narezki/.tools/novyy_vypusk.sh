@@ -2,7 +2,7 @@
 # Новый выпуск на Маке Ники: скачать с YouTube, расшифровать и отдать расшифровку облачному Claude.
 # Папка нарезок не связана с GitHub, поэтому расшифровка уходит архивом на рабочий стол - его перетащить в чат.
 #   curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/novyy_vypusk.sh | bash -s ссылка выпуск
-# Пример: ... | bash -s https://www.youtube.com/watch?v=Hb8VMLYWP2E poperechny-mat-1
+# Пример: ... | bash -s "https://www.youtube.com/watch?v=Hb8VMLYWP2E" poperechny-mat-1  (ссылка в кавычках - иначе zsh: no matches found)
 # Сначала звук и расшифровка (архив готов раньше), потом видео source.mp4 и сверка расшифровки с ним (архив обновляется).
 set -e
 URL="$1"; V="$2"

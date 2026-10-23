@@ -71,7 +71,7 @@
 - `novyy_vypusk.sh ссылка выпуск` - новый выпуск на Маке одной строкой: звук, расшифровка, видео, сверка;
   расшифровку (`words.json`, `transcript.txt`) кладёт архивом «<выпуск> - расшифровка.zip» на рабочий стол - Ника
   перетаскивает его в чат, облачный Claude кладёт в `<выпуск>/` в git:
-  `curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/novyy_vypusk.sh | bash -s ссылка выпуск`.
+  `curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/novyy_vypusk.sh | bash -s "ссылка" выпуск` (ссылку - в кавычках, иначе zsh ругается «no matches found» на «?»).
   Поперечный «Русский мат» 1 серия (Hb8VMLYWP2E) - выпуск `poperechny-mat-1` (23.10.2026).
 - `ayrapetov6.sh` - пачка 6 Айрапетова на Маке одной строкой, без git (как `orlov2.sh`):
   `curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/ayrapetov6.sh | bash` (`-s plan` - длины, `-s N` - один ролик).
