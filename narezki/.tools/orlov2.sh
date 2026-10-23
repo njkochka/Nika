@@ -6,6 +6,7 @@
 # 9 роликов для rezanina:     curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/orlov2.sh | bash -s all
 # 9 роликов для нового ТТ:    ... | bash -s novyy
 # Пересобрать ролики нового ТТ по порядку в batch_novyy.json (5 - стихи, 6 - прицеп, 7 - туфля): ... | bash -s novyy 5 6 7
+# Сдвиг расшифровки words.json против звука source.mp4 (строка на каждые 5 минут): ... | bash -s sdvig
 # Один ролик rezanina по порядку в batch.json (0 - плинтус, 1 - ворота): ... | bash -s one 1
 # Обе половины по папкам «резанина» и «новый тт» (номер = номер темы; собранные не пересобираются): ... | bash -s papki
 set -e
@@ -18,7 +19,7 @@ G=$(git -C "$N" rev-parse --show-toplevel 2>/dev/null || true)
 if [ -n "$G" ] && [ "$(git -C "$G" remote get-url origin 2>/dev/null)" = "https://github.com/njkochka/Nika.git" ]; then
   git -C "$G" branch --unset-upstream 2>/dev/null || true; git -C "$G" remote remove origin
 fi
-for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
+for f in batch.py make_short.py tidy.py add_music.py check_cuts.py banner.py sheet.py sdvig.py; do curl -fsSL "$R/.tools/$f" -o "$T/$f"; done
 for f in Montserrat.ttf Rubik.ttf Unbounded.ttf; do curl -fsSL "$R/.tools/fonts/$f" -o "$T/fonts/$f"; done
 for f in words.json batch.json batch_novyy.json batch_proba.json; do curl -fsSL "$R/orlov-2/$f" -o "$E/$f"; done
 ln -sfn "$N/.tools/venv" "$T/venv"
@@ -31,6 +32,7 @@ if [ ! -f "$E/source.mp4" ]; then
   fi
 fi
 cd "$T"
+if [ "$1" = sdvig ]; then ./venv/bin/python sdvig.py "$E/" 300 </dev/null 2>&1 | grep -v -i warn; exit; fi
 [ -f "$E/frames/sheet.jpg" ] || ./venv/bin/python sheet.py "$E/" 60 </dev/null
 if [ "$1" = papki ]; then ./venv/bin/python batch.py "$E/batch.json" --music </dev/null; ./venv/bin/python batch.py "$E/batch_novyy.json" --music </dev/null
   open ~/Desktop/"резанина"; open ~/Desktop/"новый тт"; exit
