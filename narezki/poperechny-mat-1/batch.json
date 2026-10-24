@@ -1,0 +1,137 @@
+{
+ "out": "Поперечный",
+ "prefix": "Поперечный",
+ "music": "BONES - HDMI (PXVL Remix).mp3",
+ "music_lufs": -27.8,
+ "sub_style": "neo_yellow",
+ "desktop_dir": "Поперечный",
+ "host": [
+  [
+   312.5,
+   "big"
+  ],
+  [
+   391.7,
+   "big"
+  ],
+  [
+   462.2,
+   "big"
+  ],
+  [
+   494.2,
+   "big"
+  ],
+  [
+   558.8,
+   "big"
+  ]
+ ],
+ "people": {
+  "poperechny": {
+   "guest": [
+    [
+     312.5,
+     "big"
+    ],
+    [
+     391.7,
+     "big"
+    ],
+    [
+     462.2,
+     "big"
+    ],
+    [
+     494.2,
+     "big"
+    ],
+    [
+     558.8,
+     "big"
+    ]
+   ]
+  }
+ },
+ "shorts": [
+  {
+   "n": 1,
+   "name": "мама",
+   "who": "poperechny",
+   "yt": "Почему мат называется матом",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true,
+    "stage_torso": 0
+   },
+   "ranges": [
+    [
+     792,
+     895,
+     "g"
+    ]
+   ]
+  },
+  {
+   "n": 2,
+   "name": "татары",
+   "who": "poperechny",
+   "yt": "Мат на Русь привезли татаро-монголы?",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true,
+    "stage_torso": 0
+   },
+   "ranges": [
+    [
+     974,
+     1027,
+     "g"
+    ],
+    [
+     1048,
+     1060,
+     "g"
+    ],
+    [
+     1137,
+     1221,
+     "g"
+    ]
+   ],
+   "fix_words": {
+    "1197": "татаро-монголы",
+    "1198": ""
+   }
+  },
+  {
+   "n": 3,
+   "name": "хвоя",
+   "who": "poperechny",
+   "yt": "Хвоя и хвост - родственники главного слова",
+   "cfg": {
+    "silence_db": -25,
+    "silence_min": 0.15,
+    "min_piece": 0.5,
+    "track": true,
+    "stage_torso": 0
+   },
+   "ranges": [
+    [
+     1222,
+     1294,
+     "g"
+    ],
+    [
+     1358,
+     1448,
+     "g"
+    ]
+   ]
+  }
+ ]
+}

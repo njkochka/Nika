@@ -73,6 +73,8 @@
   перетаскивает его в чат, облачный Claude кладёт в `<выпуск>/` в git:
   `curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/novyy_vypusk.sh | bash -s "ссылка" выпуск` (ссылку - в кавычках, иначе zsh ругается «no matches found» на «?»).
   Поперечный «Русский мат» 1 серия (Hb8VMLYWP2E) - выпуск `poperechny-mat-1` (23.10.2026).
+- `sobrat.sh выпуск [batch.json] [plan|N...]` - собрать пачку нового выпуска на Маке одной строкой (после `novyy_vypusk.sh`):
+  `curl -fsSL "https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/sobrat.sh?t=1" | bash -s выпуск`.
 - `ayrapetov6.sh` - пачка 6 Айрапетова на Маке одной строкой, без git (как `orlov2.sh`):
   `curl -fsSL https://raw.githubusercontent.com/njkochka/Nika/main/narezki/.tools/ayrapetov6.sh | bash` (`-s plan` - длины, `-s N` - один ролик).
 - `find.py выпуск/ --map | --min 12-15 | слова...` - кусок compact.txt вместо чтения целиком.
